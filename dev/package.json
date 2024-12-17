@@ -1,0 +1,34 @@
+{
+  "name": "grrr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "assets/app.js",
+  "scripts": {
+    "dev": "npm-run-all --parallel devJsServer devSassWatch devCssPrefix",
+    "build": "npm-run-all buildSass buildCss buildCssMin buildCssPrefix",
+    "devJsServer": "webpack serve --mode development --config webpack.config.js",
+    "devSassWatch": "sass --watch --update --style=expanded src/scss:src/css",
+    "devCssPrefix": "postcss src/css/*.css --use autoprefixer -d src/css --watch",
+    "buildCss": "sass --no-source-map --style=expanded src/scss/grrr.scss:../dist/.NEW/grrr.css",
+    "buildCssMin": "sass --no-source-map --style=compressed src/scss/grrr.scss:../dist/.NEW/grrr.min.css",
+    "buildCssPrefix": "postcss ../dist/.NEW/*.css --no-map --use autoprefixer -d ../dist/.NEW",
+    "buildSass": "bash -c \"mkdir -p ../dist/.NEW && cp src/scss/grrr.scss ../dist/.NEW/ && cp src/scss/grrr.mixins.scss ../dist/.NEW/\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
+    "autoprefixer": "^10.4.14",
+    "babel-loader": "^9.1.3",
+    "minipass": "^7.0.3",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.27",
+    "postcss-cli": "^10.1.0",
+    "rimraf": "^6.0.1",
+    "sass": "^1.65.1",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}

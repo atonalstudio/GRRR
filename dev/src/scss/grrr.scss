@@ -1,0 +1,43 @@
+@use './grrr.mixins.scss';
+
+.grrr {
+	@include grrr.grrr;
+
+	// grrr--fluid
+	&--fluid{
+		@include grrr.grrr--fluid;
+	}
+
+	// grrr--still
+	&--still{
+		@include grrr.grrr--still;
+		&--from-first{
+			@include grrr.grrr--still--from-first;
+		}
+		&--to-last:not(#{&}--from-first){
+			@include grrr.grrr--still--to-last;
+		}
+	}
+
+	// grrr__sub
+	&__sub{
+		@include grrr.grrr__sub;
+		&--from-full{
+			@include grrr.grrr__sub--from-full;
+		}
+		&--to-full:not(#{&}--from-full){
+			@include grrr.grrr__sub--to-full;
+		}
+		&--off-gutter{
+			@include grrr.grrr__sub--off-gutter;
+		}
+	}
+
+	// utilities
+	&--inherit{
+		@include grrr.grrr--inherit;
+	}
+	&--unset{
+		@include grrr.grrr--unset;
+	}
+}
