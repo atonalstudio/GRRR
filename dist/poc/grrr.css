@@ -1,3 +1,9 @@
+/*!
+ * GRRR - CSS Grid System
+ * Copyright (c) 2024 Atonal Studio
+ * Licensed under the MIT License
+ * For details, see: https://github.com/atonalstudio/grrr
+ */
 .grrr {
   --_grrr-cols: var(--grrr-cols, 12);
   --_grrr-gutter: var(--grrr-gutter, 18px);

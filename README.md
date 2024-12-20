@@ -1,13 +1,15 @@
 
 # GRRR Documentation
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
+Official website: [grrr.atonalstudio.com](https://grrr.atonalstudio.com)
 
 ## Proof of Concept
 
 The GRRR experiment is still a proof of concept, meaning we are extensively testing and seeking community feedback before continuing its evolution. That said, some features may not yet be in their final form.
 
 ## Getting Started
-
 
 You can use the **GRRR** by importing it via a CDN or downloading it from the GitHub repository.
 
@@ -333,3 +335,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 We recommend using the GRRR Sass calculation functions within 100% window-width containers. If you have external UI elements (e.g., fixed sidebars, additional browser scrollbars, or toolbars) that reduce the GRRR dimensions and you plan to use the GRRR Sass calculation functions, you can dynamically update the `--grrr-ui-out` variable within the target GRRR scope. This adjustment is necessary because the calculations are based on the viewport width (dvw). **Important:** The `--grrr-ui-out` variable expects the total width of the area outside the container.
 
+## License
+
+This project is licensed under the [MIT License](./LICENSE). You are free to use it in commercial and non-commercial projects, as long as you give credit to the original author: atonal.studio.
