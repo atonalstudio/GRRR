@@ -150,6 +150,7 @@ The `grrr--fluid` class creates a fluid grid layout where columns automatically 
 | `--grrr-cols`      | Number of columns       | `12`          |
 | `--grrr-gutter`    | Space between columns   | `18px`        |
 | `--grrr-margin`    | Margin outside the grid | `20px`        | 
+| `--grrr-col-width` | Default column width when fluid is off    | `84px`        |
 | `--grrr-fluid-col` + `--grrr-fluid-off`| Turns on/off the fluid behaviour, **off**: both -: `initial` **on**: `--grrr-fluid-col: 1fr; --grrr-fluid-off: 0`    | on        |
 
 #### HTML
@@ -175,9 +176,8 @@ The `grrr--still` class creates a grid where specific columns maintain their lar
 | `--grrr-col-width` | Default column width    | `84px`        |
 | `--grrr-still-start` | Starting column for fixed area | `5`           |
 | `--grrr-still-end`   | Ending column for fixed area   | `10` |
-| `--grrr-col-stilfluid-col` | Turns on/off the still columnsfluid behaviour, off: `initial` on: `var(--_grrr-col-default)0`    | `initial`      |
-| `--grrr-fluid-col` + `--grrr-fluid-ff` | Turns on/off the  behaviour, **off**: both - `initial` **on**: `--grrr-fluid-col: 1fr; --grrr-fluid-off: 0`    | off |
-| `--grrr-col-still` | Turns on/off the still behaviour, off: `initial` on: `var(--grrr-col-default)`    | `initial`      |
+| `--grrr-col-still` | Turns on/off the still columns, off: `initial` on: `var(--_grrr-col-default)`    | `initial`      |
+| `--grrr-fluid-col` + `--grrr-fluid-off` | Turns on/off the  behaviour, **off**: both - `initial` **on**: `--grrr-fluid-col: 1fr; --grrr-fluid-off: 0`    | off |
 
 #### HTML
 
@@ -229,7 +229,6 @@ The `grrr__sub` class is used for nested grids occupying restrict areas, similar
 |`.grrr__sub--off-gutter`| Expands to the gutters on the edges.                                                            |
 
 ### Observations
- - Not tested grrr__sub `inside` grrr__sub`
  - Inside `grrr--still` the behaviour is not consistent.
 
 ## `grrr--inherit`
@@ -325,11 +324,11 @@ The GRRR Sass functions rely on the CSS variable `--grrr-ui-out` to account for 
 ```javascript
 window.addEventListener('DOMContentLoaded', () => {
   // Dynamically calculate scrollbar width and update the CSS variable.
-    const scrollbarWidth = () => {
-      let w = window.innerWidth - document.documentElement.clientWidth;
-        document.documentElement.style.setProperty('--grrr-ui-out', w + "px");
-    };
-    new ResizeObserver(scrollbarWidth).observe(document.body);
+  const scrollbarWidth = () => {
+    let w = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--grrr-ui-out', w + "px");
+  };
+  new ResizeObserver(scrollbarWidth).observe(document.body);
 });
 ```
 
