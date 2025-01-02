@@ -299,3 +299,11 @@
 		$gutter-width
 	);
 }
+
+// Base span calculation function.
+@function grrr-span-calc($n-cols, $n-extra-gutters: 0, $col-width, $gutter-width: false) {
+	$gutter-width: if($gutter-width == false, var(--_grrr-gutter), $gutter-width);
+	$gutter-total: calc($gutter-width * ($n-cols - 1 + $n-extra-gutters));
+	$total-width: calc($gutter-total + $n-cols * $col-width);
+	@return $total-width;
+}
