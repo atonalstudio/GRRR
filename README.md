@@ -16,7 +16,7 @@ You can use the **GRRR** by importing it via a CDN or downloading it from the Gi
 **CDN**:
 
 ```html
-<link  rel="stylesheet"  href="https://atonalstudio.github.io/GRRR/dist/poc/grrr.min.css">
+<link  rel="stylesheet"  href="https://atonalstudio.github.io/GRRR/dist/poc-v1/grrr.min.css">
 ```
 
 **GitHub**:
