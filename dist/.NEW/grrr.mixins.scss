@@ -153,7 +153,7 @@ $after-still-range: "repeat( calc(#{$cols} - #{$still-end} - 1),#{$col-flex-widt
 }
 
 @mixin grrr--still--from-first {
-	--_grrr-still-start: 1 !important;
+	--grrr-still-start: 1 !important;
 
 	grid-template-columns:
 		// Off Board
@@ -172,9 +172,9 @@ $after-still-range: "repeat( calc(#{$cols} - #{$still-end} - 1),#{$col-flex-widt
 }
 
 @mixin grrr--still--to-last {
-	--_grrr-still-end: #{$cols} !important;
+	--grrr-still-end: #{$cols} !important;
 
-	grid-template-columns:
+		grid-template-columns:
 		// Off Board
 		[full-start margin-start] #{$margin-left}
 		[margin-end off-start] #{$off-left}
