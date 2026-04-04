@@ -7,11 +7,11 @@ Official website: [grrr.atonalstudio.com](https://grrr.atonalstudio.com)
 
 ## About GRRR
 
-GRRR experiment is not a library, it's a consept.
+GRRR experiment is not a library, it's a concept.
 
 GRRR is a CSS Grid system designed around runtime configuration via CSS custom properties. Rather than baking values into compiled CSS, every sizing decision — columns, gutters, margins, off areas — lives in variables that cascade and inherit like normal CSS. This means a single class can power layouts across breakpoints, themes, and nested contexts without re-compiling.
 
-It pairs naturally with subgrid for nested components and named grid lines for semantic placement. When used consistently it can significantly reduce the CSS footprint of block-based or component-driven UIs since it's a simple library with less than 1kb gzipped.
+It pairs naturally with subgrid for nested components and named grid lines for semantic placement. When used consistently it can significantly reduce the CSS footprint of block-based or component-driven UIs since it's a simple css file with less than 1kb gzipped.
 
 ---
 
