@@ -45,7 +45,7 @@ $_still-cols: calc( #{$still-end} - #{$still-start} + 1 );
 $still-cols: var(--_grrr-still-cols);
 $_still-col-width: calc(
 	(100% -
-		( #{$margins-total-width} + ( #{--grrr-gutter} * ( #{$still-cols} - 1 ) ) )
+		( #{$margins-total-width} + ( #{$gutter} * ( #{$still-cols} - 1 ) ) )
 	) / #{$still-cols}
 );
 $still-col-width: var(--_grrr-still-col-width);
@@ -69,11 +69,11 @@ $still-col-flex-width: var(--_grrr-still-col-flex-width);
 }
 
 @mixin grrr-still-vars{
-	--_still-start: #{$_still-start};
-	--_still-end: #{$_still-end};
-	--_still-cols: #{$_still-cols};
-	--_still-col-width: #{$_still-col-width};
-	--_still-col-flex-width: #{$_still-col-flex-width};
+	--_grrr-still-start: #{$_still-start};
+	--_grrr-still-end: #{$_still-end};
+	--_grrr-still-cols: #{$_still-cols};
+	--_grrr-still-col-width: #{$_still-col-width};
+	--_grrr-still-col-flex-width: #{$_still-col-flex-width};
 }
 
 
@@ -119,7 +119,7 @@ $still-col-flex-width: var(--_grrr-still-col-flex-width);
 		#{$col-flex-width}
 		[col-end board-end off-start]
 		// Off Board
-		#{$off-right} [off-end margin-end]
+		#{$off-right} [off-end margin-start]
 		#{$margin-right} [margin-end full-end];
 }
 
@@ -128,9 +128,11 @@ $still-col-flex-width: var(--_grrr-still-col-flex-width);
 
 $still-range: "repeat(calc(#{$still-cols} - 1), #{$still-col-flex-width} [col-end gutter-start] #{$gutter} [gutter-end col-start]) #{$still-col-flex-width} [col-end gutter-start]";
 
+$still-range-to-last: "repeat(calc(#{$still-cols} - 1), #{$still-col-flex-width} [col-end gutter-start] #{$gutter} [gutter-end col-start]) #{$still-col-flex-width}";
+
 $before-still-range: "repeat(calc(#{$still-start} - 1), #{$col-flex-width} [col-end gutter-start] minmax(0, #{$gutter}) [gutter-end col-start])";
 
-$after-still-range: "repeat( calc(#{$cols} - #{$still-end} - 1),#{$col-flex-width} [col-end gutter-start] minmax(0, #{$gutter}) [gutter-end col-start]) #{$col-flex-width}";
+$after-still-range: "repeat(calc(#{$cols} - #{$still-end}), minmax(0, #{$gutter}) [gutter-end col-start] #{$col-flex-width} [col-end gutter-start])";
 
 @mixin grrr--still {
 	--grrr-use-still-area: col-start #{$still-start} / col-end #{$still-end};
@@ -148,7 +150,7 @@ $after-still-range: "repeat( calc(#{$cols} - #{$still-end} - 1),#{$col-flex-widt
 		[col-end board-end off-start]
 
 		// Off Board
-		#{$off-right} [off-end margin-end]
+		#{$off-right} [off-end margin-start]
 		#{$margin-right} [margin-end full-end];
 }
 
@@ -167,7 +169,7 @@ $after-still-range: "repeat( calc(#{$cols} - #{$still-end} - 1),#{$col-flex-widt
 		[col-end board-end off-start]
 
 		// Off Board
-		#{$off-right} [off-end margin-end]
+		#{$off-right} [off-end margin-start]
 		#{$margin-right} [margin-end full-end];
 }
 
@@ -182,11 +184,11 @@ $after-still-range: "repeat( calc(#{$cols} - #{$still-end} - 1),#{$col-flex-widt
 		// still columns
 		[off-end board-start col-start]
 		#{$before-still-range}
-		#{$still-range}
+		#{$still-range-to-last}
 		[col-end board-end off-start]
 
 		// Off Board
-		#{$off-right} [off-end margin-end]
+		#{$off-right} [off-end margin-start]
 		#{$margin-right} [margin-end full-end];
 }
 

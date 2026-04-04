@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRRR | Demo | Basic One</title>
+  <link rel="stylesheet" href="../../dist/.NEW/grrr.min.css">
+  <link rel="stylesheet" href="./shared.css">
+  <style id="test"></style>
+</head>
+<body>
+
+  <div id="toolbar">
+    <label for="test-select">Test</label>
+    <select id="test-select"></select>
+  </div>
+
+  <div id="info">
+    <h1 id="name">—</h1>
+    <p id="expects">—</p>
+  </div>
+
+  <div id="canvas">
+    <div id="container"></div>
+  </div>
+
+  <details id="css-panel">
+    <summary>Applied CSS</summary>
+    <code id="css"></code>
+  </details>
+
+  <script src="./tests.js"></script>
+  <script>
+    const select    = document.getElementById('test-select');
+    const nameEl    = document.getElementById('name');
+    const expectsEl = document.getElementById('expects');
+    const container = document.getElementById('container');
+    const styleEl   = document.getElementById('test');
+    const cssEl     = document.getElementById('css');
+
+    // Populate select
+    tests.forEach((t, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = t.name;
+      select.appendChild(opt);
+    });
+
+    function applyTest(index) {
+      const t = tests[index];
+      if (!t) return;
+
+      const css  = typeof t.css  === 'function' ? t.css()  : (t.css  || '');
+      const html = typeof t.html === 'function' ? t.html() : (t.html || '');
+
+      nameEl.textContent    = t.name;
+      expectsEl.textContent = t.expects;
+
+      container.className   = t.className || '';
+      container.innerHTML   = html;
+
+      styleEl.textContent   = css;
+      cssEl.textContent     = css.trim();
+
+      select.value = index;
+
+      const url = new URL(location.href);
+      url.searchParams.set('test', t.name);
+      history.replaceState(null, '', url);
+    }
+
+    function findTestIndex(name) {
+      return tests.findIndex(t => t.name === name);
+    }
+
+    select.addEventListener('change', () => applyTest(Number(select.value)));
+
+    const params  = new URLSearchParams(location.search);
+    const initial = findTestIndex(params.get('test') || '');
+    applyTest(initial >= 0 ? initial : 0);
+  </script>
+</body>
+</html>

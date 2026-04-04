@@ -25,11 +25,11 @@
   );
 }
 .grrr--still {
-  --_still-start: var(--grrr-still-start, 3);
-  --_still-end: var(--grrr-still-end, 10);
-  --_still-cols: calc(var(--_grrr-still-end) - var(--_grrr-still-start) + 1);
-  --_still-col-width: calc((100% - (var(--_grrr-margins-total-width) + --grrr-gutter * (var(--_grrr-still-cols) - 1))) / var(--_grrr-still-cols));
-  --_still-col-flex-width: min(var(--_grrr-still-col-width), var(--_grrr-col-width));
+  --_grrr-still-start: var(--grrr-still-start, 3);
+  --_grrr-still-end: var(--grrr-still-end, 10);
+  --_grrr-still-cols: calc(var(--_grrr-still-end) - var(--_grrr-still-start) + 1);
+  --_grrr-still-col-width: calc((100% - (var(--_grrr-margins-total-width) + var(--_grrr-gutter) * (var(--_grrr-still-cols) - 1))) / var(--_grrr-still-cols));
+  --_grrr-still-col-flex-width: min(var(--_grrr-still-col-width), var(--_grrr-col-width));
 }
 
 .grrr {
@@ -39,7 +39,7 @@
   grid-column: 1/-1;
   align-content: start;
   width: 100%;
-  grid-template-columns: [full-start margin-start] var(--_grrr-margin-left) [margin-end off-start] var(--_grrr-off-left) [off-end board-start col-start] repeat(calc(var(--_grrr-cols) - 1), var(--_grrr-col-flex-width) [col-end gutter-start] var(--_grrr-gutter) [gutter-end col-start]) var(--_grrr-col-flex-width) [col-end board-end off-start] var(--_grrr-off-right) [off-end margin-end] var(--_grrr-margin-right) [margin-end full-end];
+  grid-template-columns: [full-start margin-start] var(--_grrr-margin-left) [margin-end off-start] var(--_grrr-off-left) [off-end board-start col-start] repeat(calc(var(--_grrr-cols) - 1), var(--_grrr-col-flex-width) [col-end gutter-start] var(--_grrr-gutter) [gutter-end col-start]) var(--_grrr-col-flex-width) [col-end board-end off-start] var(--_grrr-off-right) [off-end margin-start] var(--_grrr-margin-right) [margin-end full-end];
 }
 .grrr--fluid {
   --grrr-off: 0;
@@ -47,15 +47,15 @@
 }
 .grrr--still {
   --grrr-use-still-area: col-start var(--_grrr-still-start) / col-end var(--_grrr-still-end);
-  grid-template-columns: [full-start margin-start] var(--_grrr-margin-left) [margin-end off-start] var(--_grrr-off-left) [off-end board-start col-start] repeat(calc(var(--_grrr-still-start) - 1), var(--_grrr-col-flex-width) [col-end gutter-start] minmax(0, var(--_grrr-gutter)) [gutter-end col-start]) repeat(calc(var(--_grrr-still-cols) - 1), var(--_grrr-still-col-flex-width) [col-end gutter-start] var(--_grrr-gutter) [gutter-end col-start]) var(--_grrr-still-col-flex-width) [col-end gutter-start] repeat( calc(var(--_grrr-cols) - var(--_grrr-still-end) - 1),var(--_grrr-col-flex-width) [col-end gutter-start] minmax(0, var(--_grrr-gutter)) [gutter-end col-start]) var(--_grrr-col-flex-width) [col-end board-end off-start] var(--_grrr-off-right) [off-end margin-end] var(--_grrr-margin-right) [margin-end full-end];
+  grid-template-columns: [full-start margin-start] var(--_grrr-margin-left) [margin-end off-start] var(--_grrr-off-left) [off-end board-start col-start] repeat(calc(var(--_grrr-still-start) - 1), var(--_grrr-col-flex-width) [col-end gutter-start] minmax(0, var(--_grrr-gutter)) [gutter-end col-start]) repeat(calc(var(--_grrr-still-cols) - 1), var(--_grrr-still-col-flex-width) [col-end gutter-start] var(--_grrr-gutter) [gutter-end col-start]) var(--_grrr-still-col-flex-width) [col-end gutter-start] repeat(calc(var(--_grrr-cols) - var(--_grrr-still-end)), minmax(0, var(--_grrr-gutter)) [gutter-end col-start] var(--_grrr-col-flex-width) [col-end gutter-start]) [col-end board-end off-start] var(--_grrr-off-right) [off-end margin-start] var(--_grrr-margin-right) [margin-end full-end];
 }
 .grrr--still--from-first {
-  --grrr-still-start: 1 !important;
-  grid-template-columns: [full-start margin-start] var(--_grrr-margin-left) [margin-end off-start] var(--_grrr-off-left) [off-end board-start col-start] repeat(calc(var(--_grrr-still-cols) - 1), var(--_grrr-still-col-flex-width) [col-end gutter-start] var(--_grrr-gutter) [gutter-end col-start]) var(--_grrr-still-col-flex-width) [col-end gutter-start] repeat( calc(var(--_grrr-cols) - var(--_grrr-still-end) - 1),var(--_grrr-col-flex-width) [col-end gutter-start] minmax(0, var(--_grrr-gutter)) [gutter-end col-start]) var(--_grrr-col-flex-width) [col-end board-end off-start] var(--_grrr-off-right) [off-end margin-end] var(--_grrr-margin-right) [margin-end full-end];
+  --_grrr-still-start: 1 !important;
+  grid-template-columns: [full-start margin-start] var(--_grrr-margin-left) [margin-end off-start] var(--_grrr-off-left) [off-end board-start col-start] repeat(calc(var(--_grrr-still-cols) - 1), var(--_grrr-still-col-flex-width) [col-end gutter-start] var(--_grrr-gutter) [gutter-end col-start]) var(--_grrr-still-col-flex-width) [col-end gutter-start] repeat(calc(var(--_grrr-cols) - var(--_grrr-still-end)), minmax(0, var(--_grrr-gutter)) [gutter-end col-start] var(--_grrr-col-flex-width) [col-end gutter-start]) [col-end board-end off-start] var(--_grrr-off-right) [off-end margin-start] var(--_grrr-margin-right) [margin-end full-end];
 }
 .grrr--still--to-last:not(.grrr--still--from-first) {
-  --grrr-still-end: var(--_grrr-cols) !important;
-  grid-template-columns: [full-start margin-start] var(--_grrr-margin-left) [margin-end off-start] var(--_grrr-off-left) [off-end board-start col-start] repeat(calc(var(--_grrr-still-start) - 1), var(--_grrr-col-flex-width) [col-end gutter-start] minmax(0, var(--_grrr-gutter)) [gutter-end col-start]) repeat(calc(var(--_grrr-still-cols) - 1), var(--_grrr-still-col-flex-width) [col-end gutter-start] var(--_grrr-gutter) [gutter-end col-start]) var(--_grrr-still-col-flex-width) [col-end gutter-start] [col-end board-end off-start] var(--_grrr-off-right) [off-end margin-end] var(--_grrr-margin-right) [margin-end full-end];
+  --_grrr-still-end: var(--_grrr-cols) !important;
+  grid-template-columns: [full-start margin-start] var(--_grrr-margin-left) [margin-end off-start] var(--_grrr-off-left) [off-end board-start col-start] repeat(calc(var(--_grrr-still-start) - 1), var(--_grrr-col-flex-width) [col-end gutter-start] minmax(0, var(--_grrr-gutter)) [gutter-end col-start]) repeat(calc(var(--_grrr-still-cols) - 1), var(--_grrr-still-col-flex-width) [col-end gutter-start] var(--_grrr-gutter) [gutter-end col-start]) var(--_grrr-still-col-flex-width) [col-end board-end off-start] var(--_grrr-off-right) [off-end margin-start] var(--_grrr-margin-right) [margin-end full-end];
 }
 .grrr--inherit {
   display: inherit;

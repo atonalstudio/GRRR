@@ -1,0 +1,169 @@
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Page ── */
+body {
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  background: #f0f0f0;
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* ── Top bar ── */
+#toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+#toolbar label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+#toolbar select {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+#toolbar select:focus { outline: 2px solid #555; }
+
+/* ── Info panel ── */
+#info {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+#name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#expects {
+  font-size: 12px;
+  color: #666;
+}
+
+/* ── Canvas ── */
+#canvas {
+  flex: 1;
+  padding: 24px 0;
+  overflow: hidden;
+}
+
+/* ── CSS readout ── */
+#css-panel {
+  background: #1e1e2e;
+  border-top: 1px solid #333;
+  flex-shrink: 0;
+}
+
+#css-panel summary {
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #888;
+  cursor: pointer;
+  user-select: none;
+}
+
+#css-panel summary:hover { color: #aaa; }
+
+#css {
+  display: block;
+  padding: 12px 16px 16px;
+  font-family: "Fira Code", "Cascadia Code", monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #cdd6f4;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ── Grid container ── */
+#container {
+  width: 100%;
+  min-height: 200px;
+  align-content: center;
+}
+
+/* ── Col blocks ── */
+.col, .area {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  writing-mode:sideways-lr;
+  text-orientation: mixed;
+}
+
+/* Column */
+.col:not(.col--margin):not(.col--off):not(.col--gutter) {
+  background: #d4e4ff;
+  border: 1px solid #a8c8ff;
+  color: #2255aa;
+}
+
+/* Gutter */
+.col--gutter {
+  background: #f5f0ff;
+  border: 1px dashed #c8aaff;
+  color: #7744bb;
+  font-size: 9px;
+}
+
+/* Off */
+.col--off {
+  background: #fff8e0;
+  border: 1px dashed #ffd966;
+  color: #996600;
+}
+
+/* Margin */
+.col--margin {
+  background: #ffe0e0;
+  border: 1px dashed #ffaaaa;
+  color: #aa2222;
+}
+
+.area{
+  margin-top: 20px;
+  height: 48px;
+  writing-mode:unset;
+  text-orientation: mixed;
+  background-color: #f8ce7361;
+  border: #f8ce73 2px dashed;
+}
