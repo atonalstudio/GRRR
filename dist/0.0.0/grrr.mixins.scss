@@ -14,7 +14,6 @@ $margin-left: var(--_grrr-margin-left);
 $margin-right: var(--_grrr-margin-right);
 $off-left: var(--_grrr-off-left);
 $off-right: var(--_grrr-off-right);
-$ui-out: var(--_grrr-ui-out);
 $gutters-total-width: var(--_grrr-gutters-total-width);
 $margins-total-width: var(--_grrr-margins-total-width);
 $canvas-width: var(--_grrr-canvas-width);
@@ -35,10 +34,9 @@ $_margin-left: var(--grrr-margin-left, var(--grrr-margin, 20px) );
 $_margin-right: var(--grrr-margin-right, var(--grrr-margin, 20px) );
 $_off-left: var(--grrr-off-left, var(--grrr-off, minmax(0, 1fr)));
 $_off-right: var(--grrr-off-right, var(--grrr-off, minmax(0, 1fr)));
-$_ui-out: var(--grrr-ui-out, 0px);
 $_gutters-total-width: calc( #{$gutter} * (#{$cols} - 1) );
 $_margins-total-width: calc( #{$margin-left} + #{$margin-right} );
-$_canvas-width: calc( 100dvw - #{$ui-out} );
+$_canvas-width: var(--grrr-canvas-width, 100cqw);
 $_board-width: calc( #{$canvas-width} - ( #{$margins-total-width} + #{$gutters-total-width} ) );
 $_still-start: var(--grrr-still-start, 3);
 $_still-end: var(--grrr-still-end, 10);
@@ -61,11 +59,10 @@ $_still-col: var(--grrr-still, #{$_still-col-flex-width});
 	--_grrr-margin-right: #{$_margin-right};
 	--_grrr-off-left: #{$_off-left};
 	--_grrr-off-right: #{$_off-right};
-	--_grrr-ui-out: #{$_ui-out};
-	--_grrr-gutters_total_width: #{$_gutters-total-width};
+	--_grrr-gutters-total-width: #{$_gutters-total-width};
 	--_grrr-margins-total-width: #{$_margins-total-width};
-	--_grrr-canvas_width: #{$_canvas-width};
-	--_grrr-board_width: #{$_board-width};
+	--_grrr-canvas-width: #{$_canvas-width};
+	--_grrr-board-width: #{$_board-width};
 }
 
 @mixin grrr-still-vars{
@@ -81,8 +78,8 @@ $_still-col: var(--grrr-still, #{$_still-col-flex-width});
 @mixin grrr-utilites-vars {
 	--grrr-use-col-responsive-width: calc( #{$board-width} / #{$cols} );
 	--grrr-use-col-width: min(
-		var(--grrr-use-col-responsive-width),
-		var(--_grrr-col-width)
+		var(--_grrr-col-width),
+		var(--grrr-use-col-responsive-width)
 	);
 	--grrr-unstill: #{$col-flex-width};
 	--grrr-use-fluid-col: minmax(0, 1fr);
@@ -96,6 +93,7 @@ $_still-col: var(--grrr-still, #{$_still-col-flex-width});
 	grid-column: 1 / -1;
 	align-content: start;
 	width: 100%;
+	container-type: inline-size;
 }
 
 // grrr--fluid
@@ -111,8 +109,6 @@ $_still-col: var(--grrr-still, #{$_still-col-flex-width});
 
 // grrr
 @mixin grrr {
-	@include grrr-base;
-
 	grid-template-columns:
 		// Off Board
 		[full-start margin-start] #{$margin-left}

@@ -128,6 +128,7 @@ body {
 #canvas {
   resize: horizontal;
   overflow: auto;
+  container-type: inline-size;
 }
 
 /* ── Grid container ── */
@@ -139,7 +140,7 @@ body {
 
 /* ── Col blocks ── */
 .col, .area {
-  height: 100px;
+  min-height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -191,4 +192,20 @@ body {
   background-color: transparent;
   border: #f8ce73 2px dashed;
   border-top-width: 0;
+  justify-content: unset;
+}
+
+.calc-box {
+  height: 40px;
+  background: #ffa94d33;
+  border: 2px solid #ffa94d;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #b35c00;
+  white-space: nowrap;
+  overflow: hidden;
 }

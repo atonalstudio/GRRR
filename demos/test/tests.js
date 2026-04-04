@@ -316,6 +316,74 @@ var tests = [
         `
     },
 
+    // ── Calculations ─────────────────────────────────────────────
+
+    {
+        name: 'Calc · Single column width',
+        expects: 'The orange area should be exactly 1 column wide. Resize to verify it tracks the column size until grid collapsing (breakpoint)',
+        className: 'grrr',
+        html: () => makeBoard(12) + `
+            <div class="area" style="grid-column: board; margin-top: 12px;">
+                <div class="calc-box" style="width: var(--grrr-use-col-width);">
+                    1 col
+                </div>
+            </div>
+        `,
+        css: () => `
+        #container{ ${grrrConfig()} }
+        @container (width < 700px) {
+            #container{
+                --grrr-cols: 6;
+            }
+            #container .col:nth-child(13) ~ *:not(.col--off,.col--margin,.area){
+                display: none;
+            }
+        }
+        `
+    },
+    {
+        name: 'Calc · 4-column span',
+        expects: 'The orange area should align exactly with cols 1–4 including the 3 gutters between them.',
+        className: 'grrr',
+        html: () => makeBoard(12) + `
+            <div class="area" style="grid-column: board; margin-top: 12px;">
+                <div class="calc-box" style="width: calc((var(--grrr-use-col-width) * 4) + (var(--grrr-gutter) * 3));">
+                    4 cols + 3 gutters
+                </div>
+            </div>
+        `,
+        css: () => `#container{ ${grrrConfig()} }`
+    },
+    {
+        name: 'Calc · Responsive vs bounded col width',
+        expects: 'Shrink the canvas. Responsive width (blue) shrinks with the grid. Bounded width (orange) stays at col-width max.',
+        className: 'grrr grrr--fluid',
+        html: () => makeBoard(12) + `
+            <div class="area" style="grid-column: board; margin-top: 12px; display: flex; flex-direction: column; align-items: start; gap: 6px;">
+                <div class="calc-box" style="width: var(--grrr-use-col-responsive-width); background: #a8c8ff; color: #2255aa;">
+                    responsive
+                </div>
+                <div class="calc-box" style="width: var(--grrr-use-col-width);">
+                    bounded (min of both)
+                </div>
+            </div>
+        `,
+        css: () => `#container{ ${grrrConfig()} }`
+    },
+    {
+        name: 'Calc · Still area width',
+        expects: 'The orange box matches the width of the still area (cols 3–10). Should stay fixed as canvas shrinks.',
+        className: 'grrr grrr--still',
+        html: () => makeBoard(12) + `
+            <div class="area" style="grid-column: board; margin-top: 12px;">
+                <div class="calc-box" style="margin-inline: auto; width: calc(var(--grrr-col-width) * 8 + var(--grrr-gutter) * 7);">
+                    still span (8 cols + 7 gutters)
+                </div>
+            </div>
+        `+ stillAreaItem() ,
+        css: () => `#container{ ${grrrConfig()} }`
+    },
+
     // ── Known issues ─────────────────────────────────────────────
 
     {

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GRRR | Demo | Basic One</title>
-  <link rel="stylesheet" href="../../dist/.NEW/grrr.min.css">
+  <title>GRRR | Visual Test Base</title>
+  <link rel="stylesheet" href="../../dist/latest/grrr.min.css">
   <link rel="stylesheet" href="./shared.css">
   <style id="test"></style>
 </head>
@@ -87,7 +87,7 @@
       widthLabel.textContent = pct + '%';
     }
 
-    widthRange.min   = 10;
+    widthRange.min   = 20;
     widthRange.max   = 100;
     widthRange.value = 100;
     widthRange.addEventListener('input', () => setCanvasWidth(Number(widthRange.value)));

@@ -5,6 +5,13 @@
  * For details, see: https://github.com/atonalstudio/grrr
  */
 .grrr {
+  display: grid;
+  grid-auto-rows: auto;
+  grid-auto-flow: row;
+  grid-column: 1/-1;
+  align-content: start;
+  width: 100%;
+  container-type: inline-size;
   --_grrr-cols: var(--grrr-cols, 12);
   --_grrr-gutter: var(--grrr-gutter, 18px);
   --_grrr-col-width: var(--grrr-col-width, 84px);
@@ -13,15 +20,14 @@
   --_grrr-margin-right: var(--grrr-margin-right, var(--grrr-margin, 20px));
   --_grrr-off-left: var(--grrr-off-left, var(--grrr-off, minmax(0, 1fr)));
   --_grrr-off-right: var(--grrr-off-right, var(--grrr-off, minmax(0, 1fr)));
-  --_grrr-ui-out: var(--grrr-ui-out, 0px);
-  --_grrr-gutters_total_width: calc(var(--_grrr-gutter) * (var(--_grrr-cols) - 1));
+  --_grrr-gutters-total-width: calc(var(--_grrr-gutter) * (var(--_grrr-cols) - 1));
   --_grrr-margins-total-width: calc(var(--_grrr-margin-left) + var(--_grrr-margin-right));
-  --_grrr-canvas_width: calc(100dvw - var(--_grrr-ui-out));
-  --_grrr-board_width: calc(var(--_grrr-canvas-width) - (var(--_grrr-margins-total-width) + var(--_grrr-gutters-total-width)));
+  --_grrr-canvas-width: var(--grrr-canvas-width, 100cqw);
+  --_grrr-board-width: calc(var(--_grrr-canvas-width) - (var(--_grrr-margins-total-width) + var(--_grrr-gutters-total-width)));
   --grrr-use-col-responsive-width: calc( var(--_grrr-board-width) / var(--_grrr-cols) );
   --grrr-use-col-width: min(
-  	var(--grrr-use-col-responsive-width),
-  	var(--_grrr-col-width)
+  	var(--_grrr-col-width),
+  	var(--grrr-use-col-responsive-width)
   );
   --grrr-unstill: var(--_grrr-col-flex-width);
   --grrr-use-fluid-col: minmax(0, 1fr);
@@ -36,12 +42,6 @@
 }
 
 .grrr {
-  display: grid;
-  grid-auto-rows: auto;
-  grid-auto-flow: row;
-  grid-column: 1/-1;
-  align-content: start;
-  width: 100%;
   grid-template-columns: [full-start margin-start] var(--_grrr-margin-left) [margin-end off-start] var(--_grrr-off-left) [off-end board-start col-start] repeat(calc(var(--_grrr-cols) - 1), var(--_grrr-col-flex-width) [col-end gutter-start] var(--_grrr-gutter) [gutter-end col-start]) var(--_grrr-col-flex-width) [col-end board-end off-start] var(--_grrr-off-right) [off-end margin-start] var(--_grrr-margin-right) [margin-end full-end];
 }
 .grrr--fluid {
