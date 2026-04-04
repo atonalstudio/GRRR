@@ -47,6 +47,21 @@ body {
 
 #toolbar select:focus { outline: 2px solid #555; }
 
+#toolbar input[type="range"] {
+  width: 160px;
+  accent-color: #888;
+  cursor: ew-resize;
+}
+
+#width-label {
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #aaa;
+  min-width: 40px;
+  text-align: right;
+}
+
 /* ── Info panel ── */
 #info {
   background: #fff;
@@ -73,6 +88,9 @@ body {
   flex: 1;
   padding: 24px 0;
   overflow: hidden;
+  border-inline: 2px solid;
+  margin-inline: auto;
+  width: 100%;
 }
 
 /* ── CSS readout ── */
@@ -106,11 +124,17 @@ body {
   overflow-x: auto;
 }
 
+/* ── Canvas (resizable viewport simulation) ── */
+#canvas {
+  resize: horizontal;
+  overflow: auto;
+}
+
 /* ── Grid container ── */
 #container {
+  padding-top: 40px;
   width: 100%;
   min-height: 200px;
-  align-content: center;
 }
 
 /* ── Col blocks ── */
@@ -161,9 +185,10 @@ body {
 
 .area{
   margin-top: 20px;
-  height: 48px;
+  height: 28px;
   writing-mode:unset;
   text-orientation: mixed;
-  background-color: #f8ce7361;
+  background-color: transparent;
   border: #f8ce73 2px dashed;
+  border-top-width: 0;
 }

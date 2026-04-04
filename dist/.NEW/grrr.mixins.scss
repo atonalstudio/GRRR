@@ -5,52 +5,49 @@
  * For details, see: https://github.com/atonalstudio/grrr
  */
 
-// Setup Vars
-$_cols: var(--grrr-cols, 12);
+// Runtime references — resolved via internal CSS custom properties at browser time
 $cols: var(--_grrr-cols);
-$_gutter: var(--grrr-gutter, 18px);
 $gutter: var(--_grrr-gutter);
-$_col-width: var(--grrr-col-width, 84px);
 $col-width: var(--_grrr-col-width);
-$_col-flex-width: var(--grrr-fluid-col, minmax(0, #{$col-width}));
 $col-flex-width: var(--_grrr-col-flex-width);
-$_margin-left: var(--grrr-margin-left, var(--grrr-margin, 20px) );
 $margin-left: var(--_grrr-margin-left);
-$_margin-right: var(--grrr-margin-right, var(--grrr-margin, 20px) );
 $margin-right: var(--_grrr-margin-right);
-$_off-left: var(--grrr-off-left, var(--grrr-off, minmax(0, 1fr)));
 $off-left: var(--_grrr-off-left);
-$_off-right: var(--grrr-off-right, var(--grrr-off, minmax(0, 1fr)));
 $off-right: var(--_grrr-off-right);
-$_ui-out: var(--grrr-ui-out, 0px);
 $ui-out: var(--_grrr-ui-out);
-
-
-// Calculation Vars
-$_gutters-total-width: calc( #{$gutter} * (#{$cols} - 1) );
 $gutters-total-width: var(--_grrr-gutters-total-width);
-$_margins-total-width: calc( #{$margin-left} + #{$margin-right} );
 $margins-total-width: var(--_grrr-margins-total-width);
-$_canvas-width: calc( 100dvw - #{$ui-out} );
 $canvas-width: var(--_grrr-canvas-width);
-$_board-width: calc( #{$canvas-width} - ( #{$margins-total-width} + #{$gutters-total-width} ) );
 $board-width: var(--_grrr-board-width);
-
-// GRRR still exposed vars
-$_still-start: var(--grrr-still-start, 3);
 $still-start: var(--_grrr-still-start);
-$_still-end: var(--grrr-still-end, 10);
 $still-end: var(--_grrr-still-end);
-$_still-cols: calc( #{$still-end} - #{$still-start} + 1 );
 $still-cols: var(--_grrr-still-cols);
+$still-col-width: var(--_grrr-still-col-width);
+$still-col-flex-width: var(--_grrr-still-col-flex-width);
+
+// CSS custom property definitions — assigned in mixins, may reference runtime vars above
+$_cols: var(--grrr-cols, 12);
+$_gutter: var(--grrr-gutter, 18px);
+$_col-width: var(--grrr-col-width, 84px);
+$_col-flex-width: var(--grrr-fluid-col, minmax(0, #{$col-width}));
+$_margin-left: var(--grrr-margin-left, var(--grrr-margin, 20px) );
+$_margin-right: var(--grrr-margin-right, var(--grrr-margin, 20px) );
+$_off-left: var(--grrr-off-left, var(--grrr-off, minmax(0, 1fr)));
+$_off-right: var(--grrr-off-right, var(--grrr-off, minmax(0, 1fr)));
+$_ui-out: var(--grrr-ui-out, 0px);
+$_gutters-total-width: calc( #{$gutter} * (#{$cols} - 1) );
+$_margins-total-width: calc( #{$margin-left} + #{$margin-right} );
+$_canvas-width: calc( 100dvw - #{$ui-out} );
+$_board-width: calc( #{$canvas-width} - ( #{$margins-total-width} + #{$gutters-total-width} ) );
+$_still-start: var(--grrr-still-start, 3);
+$_still-end: var(--grrr-still-end, 10);
+$_still-cols: calc( #{$still-end} - #{$still-start} + 1 );
 $_still-col-width: calc(
 	(100% -
 		( #{$margins-total-width} + ( #{$gutter} * ( #{$still-cols} - 1 ) ) )
 	) / #{$still-cols}
 );
-$still-col-width: var(--_grrr-still-col-width);
 $_still-col-flex-width: min(#{$still-col-width},#{$col-width});
-$still-col-flex-width: var(--_grrr-still-col-flex-width);
 
 @mixin grrr-vars{
 	--_grrr-cols: #{$_cols};

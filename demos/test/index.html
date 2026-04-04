@@ -13,6 +13,8 @@
   <div id="toolbar">
     <label for="test-select">Test</label>
     <select id="test-select"></select>
+    <label for="width-range" id="width-label">100%</label>
+    <input id="width-range" type="range" min="10" max="100" step="1">
   </div>
 
   <div id="info">
@@ -74,6 +76,21 @@
     }
 
     select.addEventListener('change', () => applyTest(Number(select.value)));
+
+    // ── Width slider ──
+    const widthRange = document.getElementById('width-range');
+    const widthLabel = document.getElementById('width-label');
+    const canvas     = document.getElementById('canvas');
+
+    function setCanvasWidth(pct) {
+      canvas.style.width = pct + '%';
+      widthLabel.textContent = pct + '%';
+    }
+
+    widthRange.min   = 10;
+    widthRange.max   = 100;
+    widthRange.value = 100;
+    widthRange.addEventListener('input', () => setCanvasWidth(Number(widthRange.value)));
 
     const params  = new URLSearchParams(location.search);
     const initial = findTestIndex(params.get('test') || '');
