@@ -41,6 +41,18 @@ var tests = [
         css: () => `#container{${grrrConfig()}}`
     },
     {
+        name: 'Still · Turns off',
+        expects: 'Simulates the configuration to turn off still area.',
+        className: 'grrr grrr--still',
+        html: () => makeBoard(12) + stillAreaItem(),
+        css: () => `
+        #container{
+            ${grrrConfig()}
+            --grrr-still: var(--grrr-unstill);
+        }
+        `
+    },
+    {
         name: 'Still · Start (cols 2–5)',
         expects: 'Cols 2–5 are fixed-width. Col 1 and cols 6–12 are fluid.',
         className: 'grrr grrr--still',
@@ -113,6 +125,73 @@ var tests = [
             --grrr-still-start: 2;
         }
         `
+    },
+
+    // ── Fluid + Still ────────────────────────────────────────────
+
+    {
+        name: 'Fluid + Still · Default (cols 3–10)',
+        expects: 'Cols 3–10 are fixed-width. Cols 1–2 and 11–12 stretch to fill remaining space (1fr).',
+        className: 'grrr grrr--fluid grrr--still',
+        html: () => makeBoard(12) + stillAreaItem(),
+        css: () => `#container{${grrrConfig()}}`
+    },
+    {
+        name: 'Fluid + Still · Start (cols 2–5)',
+        expects: 'Cols 2–5 fixed. Col 1 and cols 6–12 are fluid (1fr).',
+        className: 'grrr grrr--fluid grrr--still',
+        html: () => makeBoard(12) + stillAreaItem(),
+        css: () => `
+        #container{
+            ${grrrConfig()}
+            --grrr-still-start: 2;
+            --grrr-still-end: 5;
+        }
+        `
+    },
+    {
+        name: 'Fluid + Still · End (cols 8–11)',
+        expects: 'Cols 8–11 fixed. Cols 1–7 and col 12 are fluid (1fr).',
+        className: 'grrr grrr--fluid grrr--still',
+        html: () => makeBoard(12) + stillAreaItem(),
+        css: () => `
+        #container{
+            ${grrrConfig()}
+            --grrr-still-start: 8;
+            --grrr-still-end: 11;
+        }
+        `
+    },
+    {
+        name: 'Fluid + Still · From first (cols 1–5)',
+        expects: 'Cols 1–5 fixed. Cols 6–12 are fluid (1fr) — fluid only on the right.',
+        className: 'grrr grrr--fluid grrr--still grrr--still--from-first',
+        html: () => makeBoard(12) + stillAreaItem(),
+        css: () => `
+        #container{
+            ${grrrConfig()}
+            --grrr-still-end: 5;
+        }
+        `
+    },
+    {
+        name: 'Fluid + Still · To last (cols 6–12)',
+        expects: 'Cols 6–12 fixed. Cols 1–5 are fluid (1fr) — fluid only on the left.',
+        className: 'grrr grrr--fluid grrr--still grrr--still--to-last',
+        html: () => makeBoard(12) + stillAreaItem(),
+        css: () => `
+        #container{
+            ${grrrConfig()}
+            --grrr-still-start: 6;
+        }
+        `
+    },
+    {
+        name: 'Fluid + Still · Still off',
+        expects: 'Still disabled via grrr--still--off. All columns fluid (1fr) — should look identical to plain Fluid.',
+        className: 'grrr grrr--fluid grrr--still grrr--still--off',
+        html: () => makeBoard(12) + stillAreaItem(),
+        css: () => `#container{${grrrConfig()}}`
     },
 
     // ── Gutter ───────────────────────────────────────────────────

@@ -5,9 +5,13 @@
 
 Official website: [grrr.atonalstudio.com](https://grrr.atonalstudio.com)
 
-## Proof of Concept
+## About GRRR
 
-The GRRR experiment is still a proof of concept, meaning we are extensively testing and seeking community feedback before continuing its evolution. That said, some features may not yet be in their final form.
+The GRRR experiment is a CSS Grid solution designed to create a reactive configuration resolved at runtime, enabling flexible and inheritable grid layouts. By leveraging CSS variables and named grid ranges, it supports a wide range of variations that can accommodate diverse layout needs through a simple configuration.
+
+It works best when combined with features like subgrid for nested elements and the use of CSS variables to define standardized custom regions, allowing multiple components to adapt with minimal setup.
+
+When used properly, it can significantly reduce the overall CSS bundle size of your application. A lifesaver for visual block-based editors that must reflect the front-end.
 
 ## Getting Started
 
@@ -16,7 +20,7 @@ You can use the **GRRR** by importing it via a CDN or downloading it from the Gi
 **CDN**:
 
 ```html
-<link  rel="stylesheet"  href="https://atonalstudio.github.io/GRRR/dist/poc-v1/grrr.min.css">
+<link  rel="stylesheet"  href="https://atonalstudio.github.io/GRRR/dist/latest/grrr.min.css">
 ```
 
 **GitHub**:
@@ -30,18 +34,18 @@ Visit the [GRRR Repository](https://github.com/atonalstudio/GRRR) and go to `dis
 You can use a `div` container with the class `grrr` and nested child elements to create grid layouts:
 
 ```html
-<div class="my-container grrr">
-  <div class="my-component-1"></div>
-  <div class="my-component-2"></div>
+<div class="grrr">
+  <div class="comp-1"></div>
+  <div class="comp-2"></div>
 </div>
 ```
 
 ### CSS Setup Variables
 
-Define setup variables to customize your grid inside your containers or in the `:root` if you prefer.
+Define setup variables to customize your grid inside your containers or inside `:root`.
 
 ```css
-.my-container.grrr {
+:root {
   --grrr-cols: 12; /* Number of columns */
   --grrr-gutter: 18px; /* Space between columns */
   --grrr-margin: 20px; /* Margin to the window */
@@ -53,44 +57,43 @@ Define setup variables to customize your grid inside your containers or in the `
   --wide-area: col-start 2 / col-end 11;
   --board-area: board;
   --full-area: full;
-  
-  /* your other styles... */
 }
+
  /* breakpoints */
- @media (max-width: 1024px) { 
-  .my-container.grrr{
-    --grrr-cols: 84; /* Number of columns */
+@media (max-width: 1024px) { 
+  :root {
+    --grrr-cols: 8; /* Number of columns */
     --grrr-gutter: 12px; /* Space between columns */
 
     /* You can modify your areas */
-    --content-area: col-start 2 / col-end 11;
+    --content-area: col-start 2 / col-end 7;
     --wide-area: board
-
-    /* your other styles... */
-    }
+  }
 }
 
 @media (max-width: 768px) { 
-  .my-container.grrr{
-    --grrr-cols: ; /* Number of columns */
+  :root {
+    --grrr-cols: 4; /* Number of columns */
 	
-    /* You can turn a bounded GRRR into fluid with these two lines */
-    --grrr-fluid-off: 0;
-    --grrr-fluid-col: 1fr;
+    /* You can toggle from a bounded GRRR into fluid with these two lines */
+    --grrr-off: 0;
+    --grrr-fluid-col: var(--grrr-use-fluid-col);
 
     /* You can modify your areas */
     --content-area: board
 
     /* your other styles... */
-    }
+  }
 } 
- 
-.my-component-1{
+
+/* Then you can tell multiple components where they must be positioned. */
+
+.comp-1{
 	grid-column: var(--content-area);
 	/* your other styles... */
 }
 
-.my-component-2{
+.comp-2{
 	grid-column: var(--wide-area);
 	/* your other styles... */
 }
@@ -99,8 +102,7 @@ Define setup variables to customize your grid inside your containers or in the `
 ## Before diving deeper
 - It is designed to be used with at least two columns.
 - Our strategy is to use named ranges in our `grid-template-columns`. Therefore, if you intend to use `span`, we have a Sass function to assist with this.
-- We do not use `gap` or `column-gap`. The GRRR gutter is created using columns. But you can use `row-gap` without any issues.
-- That said, GRRR is an experimental tool, so feel free to break these rules.
+- We do not use `gap` or `column-gap`. The GRRR gutter is created using columns. But you can use `row-gap`, while using spacers or margin-top may create more refined experience.
  
 ## Grid Areas
 | Area      | Description                           | grid-column:  |
@@ -108,7 +110,7 @@ Define setup variables to customize your grid inside your containers or in the `
 | `col`     | The columns area                      | `col-start 2 / col-end 5`       |
 | `gutter`  | Space between columns                 | `gutter-start 2 / gutter-end 5` |
 | `board`   | The total area of columns and gutters | `board`                         |
-| `off`     | Space between `board` and `margin`. Also, the protection area of the modifier `.grrr__sub--off-gutter` | Left: `off-start 1 / off-end 1`, Right: `off-start 2 / off-end 2` |
+| `off`     | Space between `board` and `margin`. Also, the protection area of the modifier `.
 | `margin`  | Space between `off` and window edges  | Left: `margin-start 1 / margin-end 1`, Right: `margin-start 2 / margin-end 2` |
 | `full`    | The entire grid area, side to side    | `full`            |
 
@@ -118,7 +120,7 @@ Define setup variables to customize your grid inside your containers or in the `
 
 The `grrr` class is the base grid structure. It defines a flexible grid layout with a default column and gutter system. 
 
-#### Variables
+#### Setup variables
 
 | Variable           | Description             | Default Value |
 | ------------------ | ----------------------- | ------------- |
@@ -126,7 +128,6 @@ The `grrr` class is the base grid structure. It defines a flexible grid layout w
 | `--grrr-gutter`    | Space between columns   | `18px`        |
 | `--grrr-margin`    | Margin outside the grid | `20px`        |
 | `--grrr-col-width` | Default column width    | `84px`        |
-| `--grrr-fluid-col` + `--grrr-fluid-off` | Turns on/off the fluid behaviour, **off**: both - `initial` **on**: `--grrr-fluid-col: 1fr; --grrr-fluid-off: 0` | off |
 
 
 #### HTML
@@ -149,16 +150,14 @@ The `grrr--fluid` class creates a fluid grid layout where columns automatically 
 | ------------------ | ----------------------- | ------------- |
 | `--grrr-cols`      | Number of columns       | `12`          |
 | `--grrr-gutter`    | Space between columns   | `18px`        |
-| `--grrr-margin`    | Margin outside the grid | `20px`        | 
-| `--grrr-col-width` | Default column width when fluid is off    | `84px`        |
-| `--grrr-fluid-col` + `--grrr-fluid-off`| Turns on/off the fluid behaviour, **off**: both -: `initial` **on**: `--grrr-fluid-col: 1fr; --grrr-fluid-off: 0`    | on        |
+| `--grrr-margin`    | Margin outside the grid | `20px`        |
 
 #### HTML
 
 ```html
 <div class="grrr grrr--fluid">
-  <div class="my-component-1"></div>
-  <div class="my-component-2"></div>
+  <div class="comp-1"></div>
+  <div class="comp-2"></div>
 </div>
 ```
 
@@ -176,60 +175,25 @@ The `grrr--still` class creates a grid where specific columns maintain their lar
 | `--grrr-col-width` | Default column width    | `84px`        |
 | `--grrr-still-start` | Starting column for fixed area | `5`           |
 | `--grrr-still-end`   | Ending column for fixed area   | `10` |
-| `--grrr-col-still` | Turns on/off the still columns, off: `initial` on: `var(--_grrr-col-default)`    | `initial`      |
-| `--grrr-fluid-col` + `--grrr-fluid-off` | Turns on/off the  behaviour, **off**: both - `initial` **on**: `--grrr-fluid-col: 1fr; --grrr-fluid-off: 0`    | off |
+| `--grrr-still` | Turns the still columns off, on: `initial` off: `var(--grrr-unstill)` | `initial`      |
 
 #### HTML
 
 ```html
 <div class="grrr grrr--still">
-  <div class="my-component-1"></div>
-  <div class="my-component-2"></div>
+  <div class="comp-1"></div>
+  <div class="comp-2"></div>
 </div>
 ```
 
 #### Modifier Classes
+If you intend to use still areas from first or to last columns, use the helper classes. You cannot use both modifiers together and there is no need, just use a regular `.grrr` to achive the desired result.
+
 | Classes                    | Description                                  | 
 | -------------------------- | -------------------------------------------- |
 | `.grrr--still--from-first` | Starts the still area from the first column. |
 | `.grrr--still--to-last`    | Extends the still area to the last column.   |
 
-#### Observations
- - You cannot set still areas starting from the first column or ending at the last column without the modifier classes
- - You cannot use both modifiers together and there is no need, just use a regular `.grrr` and achieve the same result.
-
-
-## `grrr__sub`
-
-The `grrr__sub` class is used for nested grids occupying restrict areas, similar to `grid-column: subgrid`.
-
-#### Setup Variables
-
-| Variable           | Description                  | Default Value |
-| ------------------ | ---------------------------- | ------------- |
-| `--grrr-col-start` | Starting column for sub-grid | `3`           |
-| `--grrr-col-end`   | Ending column for sub-grid   | `9`           |
-
-#### HTML
-
-```html
-<div class="grrr">
-  <div class="grrr__sub">
-    <div class="my-component-1"></div>
-    <div class="my-component-2"></div>
-  </div>
-</div>
-```
-
-#### Modifier Classes
-| Classes                | Description                                                                                     | 
-| ---------------------- | ----------------------------------------------------------------------------------------------- |
-|`.grrr__sub--from-full` | Expands the sub-grid from the `full-start` area of its parent until the given `--grrr-col-end`. |
-|`.grrr__sub--to-full`   | Expands the subgrid from the given `--grrr-col-start` until the `full-end` area of its parent.  |
-|`.grrr__sub--off-gutter`| Expands to the gutters on the edges.                                                            |
-
-### Observations
- - Inside `grrr--still` the behaviour is not consistent.
 
 ## `grrr--inherit`
 
@@ -239,9 +203,11 @@ Allows to inherit the complete GRRR from a parent.
 
 ```html
 <div class="grrr">
+  <div class="comp-1"></div>
+  <div class="comp-2"></div>
   <div class="grrr--inherit">
-    <div class="my-component-1"></div>
-    <div class="my-component-2"></div>
+    <div class="comp-3"></div>
+    <div class="comp-4"></div>
   </div>
 </div>
 ```
@@ -317,7 +283,7 @@ Calculates the span width of columns for still areas or ensures fixed dimensions
 }
 ```
 
-**Avoiding GRRR Sass functions  miscalculations**
+**Avoiding GRRR Sass functions miscalculations**
 
 The GRRR Sass functions rely on the CSS variable `--grrr-ui-out` to account for external UI elements, such as scrollbars. The following JavaScript snippet dynamically solves miscalculations caused by the browser scrollbar:
 

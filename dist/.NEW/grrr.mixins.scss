@@ -24,6 +24,7 @@ $still-end: var(--_grrr-still-end);
 $still-cols: var(--_grrr-still-cols);
 $still-col-width: var(--_grrr-still-col-width);
 $still-col-flex-width: var(--_grrr-still-col-flex-width);
+$still-col: var(--_grrr-still-col);
 
 // CSS custom property definitions — assigned in mixins, may reference runtime vars above
 $_cols: var(--grrr-cols, 12);
@@ -47,7 +48,9 @@ $_still-col-width: calc(
 		( #{$margins-total-width} + ( #{$gutter} * ( #{$still-cols} - 1 ) ) )
 	) / #{$still-cols}
 );
+
 $_still-col-flex-width: min(#{$still-col-width},#{$col-width});
+$_still-col: var(--grrr-still, #{$_still-col-flex-width});
 
 @mixin grrr-vars{
 	--_grrr-cols: #{$_cols};
@@ -71,6 +74,7 @@ $_still-col-flex-width: min(#{$still-col-width},#{$col-width});
 	--_grrr-still-cols: #{$_still-cols};
 	--_grrr-still-col-width: #{$_still-col-width};
 	--_grrr-still-col-flex-width: #{$_still-col-flex-width};
+	--_grrr-still-col: #{$_still-col};
 }
 
 
@@ -80,6 +84,8 @@ $_still-col-flex-width: min(#{$still-col-width},#{$col-width});
 		var(--grrr-use-col-responsive-width),
 		var(--_grrr-col-width)
 	);
+	--grrr-unstill: #{$col-flex-width};
+	--grrr-use-fluid-col: minmax(0, 1fr);
 }
 
 // grrr--setup
@@ -95,8 +101,13 @@ $_still-col-flex-width: min(#{$still-col-width},#{$col-width});
 // grrr--fluid
 @mixin grrr--fluid{
 	--grrr-off: 0;
-	--grrr-fluid-col: 1fr;
+	--grrr-fluid-col: var(--grrr-use-fluid-col);
 }
+
+@mixin grrr--still--off{
+	--grrr-still: var(--grrr-unstill);
+}
+
 
 // grrr
 @mixin grrr {
@@ -123,9 +134,9 @@ $_still-col-flex-width: min(#{$still-col-width},#{$col-width});
 // grrr--still ------------------------------------------
 
 
-$still-range: "repeat(calc(#{$still-cols} - 1), #{$still-col-flex-width} [col-end gutter-start] #{$gutter} [gutter-end col-start]) #{$still-col-flex-width} [col-end gutter-start]";
+$still-range: "repeat(calc(#{$still-cols} - 1), #{$still-col} [col-end gutter-start] #{$gutter} [gutter-end col-start]) #{$still-col} [col-end gutter-start]";
 
-$still-range-to-last: "repeat(calc(#{$still-cols} - 1), #{$still-col-flex-width} [col-end gutter-start] #{$gutter} [gutter-end col-start]) #{$still-col-flex-width}";
+$still-range-to-last: "repeat(calc(#{$still-cols} - 1), #{$still-col} [col-end gutter-start] #{$gutter} [gutter-end col-start]) #{$still-col}";
 
 $before-still-range: "repeat(calc(#{$still-start} - 1), #{$col-flex-width} [col-end gutter-start] minmax(0, #{$gutter}) [gutter-end col-start])";
 

@@ -23,6 +23,9 @@
 		&--to-last:not(#{&}--from-first){
 			@include grrr.grrr--still--to-last;
 		}
+		&--off{
+			@include grrr.grrr--still--off;
+		}
 	}
 
 	&--inherit{
