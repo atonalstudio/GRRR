@@ -190,13 +190,15 @@ body {
 }
 
 .area{
-  margin-top: 20px;
-  height: 28px;
+  min-height: 28px;
   writing-mode:unset;
   text-orientation: mixed;
   background-color: transparent;
   border: #f8ce73 2px dashed;
   border-top-width: 0;
+}
+
+&:has(*){
   justify-content: unset;
 }
 
@@ -207,7 +209,7 @@ body {
   border-radius: 2px;
   display: flex;
   align-items: center;
-  padding: 0 8px;
+  text-align: center;
   font-size: 10px;
   font-weight: 700;
   color: #b35c00;
