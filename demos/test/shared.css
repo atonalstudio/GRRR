@@ -113,7 +113,7 @@ body {
 
 #css-panel summary:hover { color: #aaa; }
 
-#css {
+#css, #classname {
   display: block;
   padding: 12px 16px 16px;
   font-family: "Fira Code", "Cascadia Code", monospace;
@@ -122,6 +122,11 @@ body {
   color: #cdd6f4;
   white-space: pre;
   overflow-x: auto;
+}
+
+#classname{
+  font-style: italic;
+  color: #a2d018;
 }
 
 /* ── Canvas (resizable viewport simulation) ── */

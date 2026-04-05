@@ -27,7 +27,8 @@
   </div>
 
   <details id="css-panel">
-    <summary>Applied CSS</summary>
+    <summary>Applied Config</summary>
+    <code id="classname"></code>
     <code id="css"></code>
   </details>
 
@@ -38,7 +39,8 @@
     const expectsEl = document.getElementById('expects');
     const container = document.getElementById('container');
     const styleEl   = document.getElementById('test');
-    const cssEl     = document.getElementById('css');
+    const cssEl       = document.getElementById('css');
+    const classnameEl = document.getElementById('classname');
 
     // Populate select
     tests.forEach((t, i) => {
@@ -47,6 +49,32 @@
       opt.textContent = t.name;
       select.appendChild(opt);
     });
+
+    function normalizeCss(css) {
+      const INDENT = '  ';
+      // Normalise line endings, strip all existing indentation
+      const tokens = css
+        .replace(/\r\n?/g, '\n')
+        .replace(/\t/g, ' ')
+        // ensure braces and semicolons are surrounded by newlines
+        .replace(/\{/g, ' {\n')
+        .replace(/\}/g, '\n}\n')
+        .replace(/;/g,  ';\n')
+        .split('\n')
+        .map(l => l.trim())
+        .filter(l => l.length > 0);
+
+      let depth = 0;
+      const lines = [];
+      for (const token of tokens) {
+        if (token === '}') depth = Math.max(0, depth - 1);
+        lines.push(INDENT.repeat(depth) + token);
+        if (token.endsWith('{')) depth++;
+      }
+
+      // collapse consecutive blank-ish separations (none were added, but just in case)
+      return lines.join('\n');
+    }
 
     function applyTest(index) {
       const t = tests[index];
@@ -61,8 +89,9 @@
       container.className   = t.className || '';
       container.innerHTML   = html;
 
-      styleEl.textContent   = css;
-      cssEl.textContent     = css.trim();
+      styleEl.textContent       = css;
+      classnameEl.textContent   = t.className ? `.${t.className.trim().split(/\s+/).join('.')}` : '';
+      cssEl.textContent         = normalizeCss(css);
 
       select.value = index;
 
