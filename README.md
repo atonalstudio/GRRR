@@ -89,6 +89,7 @@ GRRR uses named lines in `grid-template-columns` to expose semantic placement ar
     /* Switch to fluid at mobile */
     --grrr-off: 0;
     --grrr-fluid-col: var(--grrr-use-fluid-col);
+    --content-area: board;
   }
 }
 
