@@ -402,10 +402,10 @@ var tests = [
             <div class="area t-nest-ct__area" style="margin-top: 12px;">
                 <div style="font-size: 11px; margin-bottom: 6px; min-width: 100%; text-align: center;">intermediate container-type:inline-size</div>
                 <div class="calc-box t-nest-ct__box" style="background: #fac5ff; color: #2e7d32;">fails to resolve to 6 columns.</div>
-                <div class="calc-box t-nest-ct__box" style="background: #c8e6c9; color: #2e7d32; display:none">resolve to 6 columns with dvh strategy</div>
+                <div class="calc-box t-nest-ct__box" style="background: #c8e6c9; color: #2e7d32; display:none">resolve to 6 columns with dvw strategy</div>
             </div>
             <div style="grid-column:board; margin-top: 12px; text-align: center;">
-                <label><input type="checkbox"> Solve with DVH strategy</label>
+                <label><input type="checkbox"> Solve with DVW strategy</label>
             </div>
         `,
         css: () => `
