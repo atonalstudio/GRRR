@@ -387,7 +387,7 @@ var tests = [
     // ── Known issues ─────────────────────────────────────────────
 
     {
-        name: '⚠ Forbidden · 1 column',
+        name: '⚠ Uncovered · 1 column',
         expects: 'repeat(0) bug: setting --grrr-cols: 1 generates 2 columns instead of 1.',
         className: 'grrr',
         html: () => makeBoard(2),
@@ -398,7 +398,7 @@ var tests = [
         `
     },
     {
-        name: '⚠ Forbidden · Still single column (start = end)',
+        name: '⚠ Uncovered · Still single column (start = end)',
         expects: 'repeat(0) bug: still-start = still-end collapses the repeat, adding a phantom still column.',
         className: 'grrr grrr--still',
         html: () => makeBoard(13) + stillAreaItem(),
