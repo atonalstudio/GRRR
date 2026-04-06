@@ -117,6 +117,7 @@
 
     function setCanvasWidth(pct) {
       canvas.style.width = pct + '%';
+      canvas.style.setProperty('--dvw', pct)
       widthLabel.textContent = pct + '%';
     }
 

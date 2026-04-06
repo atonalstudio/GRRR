@@ -210,6 +210,10 @@ body {
   justify-content: unset;
 }
 
+.area--still {
+  grid-column: var(--grrr-use-still-area);
+}
+
 .calc-box {
   height: 40px;
   background: #ffa94d33;

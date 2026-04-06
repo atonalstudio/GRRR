@@ -188,10 +188,10 @@ var tests = [
     },
     {
         name: 'Fluid + Still · Still off',
-        expects: 'Still disabled via grrr--still--off. All columns fluid (1fr) — should look identical to plain Fluid.',
-        className: 'grrr grrr--fluid grrr--still grrr--still--off',
+        expects: 'Still disabled. All columns fluid (1fr) — should look identical to plain Fluid.',
+        className: 'grrr grrr--fluid grrr--still',
         html: () => makeBoard(12) + stillAreaItem(),
-        css: () => `#container{${grrrConfig()}}`
+        css: () => `#container{${grrrConfig()} --grrr-still: var(--grrr-unstill);}`
     },
 
     // ── Gutter ───────────────────────────────────────────────────
@@ -323,14 +323,14 @@ var tests = [
         expects: 'The orange area should be exactly 1 column wide. Resize to verify it tracks the column size until grid collapsing (breakpoint)',
         className: 'grrr',
         html: () => makeBoard(12) + `
-            <div class="area" style="grid-column: board; margin-top: 12px;">
-                <div class="calc-box" style="width: var(--grrr-use-col-width);">
-                    1 col
-                </div>
+            <div class="area t-1col__area" style="margin-top: 12px;">
+                <div class="calc-box t-1col__box">1 col</div>
             </div>
         `,
         css: () => `
         #container{ ${grrrConfig()} }
+        .t-1col__area { grid-column: board; }
+        .t-1col__box  { width: var(--grrr-use-col-width); }
         @container (width < 700px) {
             #container{
                 --grrr-cols: 6;
@@ -346,46 +346,79 @@ var tests = [
         expects: 'The orange area should align exactly with cols 1–4 including the 3 gutters between them.',
         className: 'grrr',
         html: () => makeBoard(12) + `
-            <div class="area" style="grid-column: board; margin-top: 12px;">
-                <div class="calc-box" style="width: calc((var(--grrr-use-col-width) * 4) + (var(--grrr-gutter) * 3));">
-                    4 cols + 3 gutters
-                </div>
+            <div class="area t-4col__area" style="margin-top: 12px;">
+                <div class="calc-box t-4col__box">4 cols + 3 gutters</div>
             </div>
         `,
-        css: () => `#container{ ${grrrConfig()} }`
+        css: () => `
+        #container{ ${grrrConfig()} }
+        .t-4col__area { grid-column: board; }
+        .t-4col__box  { width: calc((var(--grrr-use-col-width) * 4) + (var(--grrr-gutter) * 3)); }
+        `
     },
     {
         name: 'Calc · Responsive vs bounded col width',
         expects: 'Shrink the canvas. Responsive width (blue) shrinks with the grid. Bounded width (orange) stays at col-width max.',
         className: 'grrr grrr--fluid',
         html: () => makeBoard(12) + `
-            <div class="area" style="grid-column: board; margin-top: 12px; display: flex; flex-direction: column; align-items: start; gap: 6px;">
-                <div class="calc-box" style="width: var(--grrr-use-col-responsive-width); background: #a8c8ff; color: #2255aa;">
-                    responsive
-                </div>
-                <div class="calc-box" style="width: var(--grrr-use-col-width);">
-                    bounded (min of both)
-                </div>
+            <div class="area t-resp__area" style="margin-top: 12px;">
+                <div class="calc-box t-resp__col" style="background: #a8c8ff; color: #2255aa;">responsive</div>
+                <div class="calc-box t-resp__bounded">bounded (min of both)</div>
             </div>
         `,
-        css: () => `#container{ ${grrrConfig()} }`
+        css: () => `
+        #container{ ${grrrConfig()} }
+        .t-resp__area    { grid-column: board; flex-direction: column; align-items: start; gap: 6px; }
+        .t-resp__col     { width: var(--grrr-use-col-responsive-width); }
+        .t-resp__bounded { width: var(--grrr-use-col-width); }
+        `
     },
     {
         name: 'Calc · Still area width',
         expects: 'The orange box matches the width of the still area (cols 3–10). Should stay fixed as canvas shrinks.',
         className: 'grrr grrr--still',
         html: () => makeBoard(12) + `
-            <div class="area" style="grid-column: board; margin-top: 12px;">
-                <div class="calc-box" style="margin-inline: auto; width: calc(var(--grrr-col-width) * 8 + var(--grrr-gutter) * 7);">
-                    still span (8 cols + 7 gutters)
-                </div>
+            <div class="area t-still-w__area" style="margin-top: 12px;">
+                <div class="calc-box t-still-w__box">still span (8 cols + 7 gutters)</div>
             </div>
-        `+ stillAreaItem() ,
-        css: () => `#container{ ${grrrConfig()} }`
+        ` + stillAreaItem(),
+        css: () => `
+        #container{ ${grrrConfig()} }
+        .t-still-w__area { grid-column: board; }
+        .t-still-w__box  { margin-inline: auto; width: calc(var(--grrr-col-width) * 8 + var(--grrr-gutter) * 7); }
+        `
     },
 
     // ── Known issues ─────────────────────────────────────────────
-
+    {
+        name: 'Calc · Nesting Intermediate container-type: inline-size',
+        expects: 'Green resolves correctly — no intermediate container. Pink fails: adding container-type:inline-size re-scopes cqw to that element, breaking the column width calculation. CSS has no mechanism to pin cqw to a specific ancestor. Fix: toggle the checkbox to switch --grrr-canvas-width to a dvw-based value, which is viewport-relative and immune to container re-scoping.',
+        className: 'grrr',
+        html: () => makeBoard(12) + `
+            <div class="area t-nest-safe__area" style="margin-top: 12px;">
+                <div style="font-size: 11px; margin-bottom: 6px; min-width: 100%; text-align: center;">no container-type:inline-size</div>
+                <div class="calc-box t-nest-safe__box" style="background: #c8e6c9; color: #2e7d32;">resolves to 6 columns.</div>
+            </div>
+            <div class="area t-nest-ct__area" style="margin-top: 12px;">
+                <div style="font-size: 11px; margin-bottom: 6px; min-width: 100%; text-align: center;">intermediate container-type:inline-size</div>
+                <div class="calc-box t-nest-ct__box" style="background: #fac5ff; color: #2e7d32;">fails to resolve to 6 columns.</div>
+                <div class="calc-box t-nest-ct__box" style="background: #c8e6c9; color: #2e7d32; display:none">resolve to 6 columns with dvh strategy</div>
+            </div>
+            <div style="grid-column:board; margin-top: 12px; text-align: center;">
+                <label><input type="checkbox"> Solve with DVH strategy</label>
+            </div>
+        `,
+        css: () => `
+        #container{ ${grrrConfig()}}
+        .t-nest-safe__area { grid-column: col-start 2 / col-end -2; flex-wrap: wrap; }
+        .t-nest-safe__box  { width: calc(var(--grrr-use-col-width) * 6 + (var(--grrr-gutter) * 5)); }
+        .t-nest-ct__area   { grid-column: col-start 2 / col-end -2; container-type: inline-size; flex-wrap: wrap; }
+        .t-nest-ct__box    { width: calc(var(--grrr-use-col-width) * 6 + (var(--grrr-gutter) * 5)); }
+        #container:has(input:checked) { --grrr-canvas-width: calc(var(--dvw, 100) * 1dvw) }
+        #container:has(input:checked) .t-nest-ct__box { display: none; }
+        #container:has(input:checked) .t-nest-ct__box + .t-nest-ct__box { display: flex !important; }
+        `
+    },
     {
         name: '⚠ Uncovered · 1 column',
         expects: 'repeat(0) bug: setting --grrr-cols: 1 generates 2 columns instead of 1.',
@@ -410,6 +443,7 @@ var tests = [
         }
         `
     },
+
 ];
 
 function grrrConfig(cols=12){
@@ -444,5 +478,5 @@ function makeCol(n, gutter = true) {
 }
 
 function stillAreaItem() {
-    return `<div class="area" style="grid-column:var(--grrr-use-still-area)">still area</div>`;
+    return `<div class="area area--still">still area</div>`;
 }
