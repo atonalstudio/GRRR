@@ -448,6 +448,10 @@ When a component lives inside a `.grrr--still`, subgrid inherits the still colum
 
 ---
 
+## Demos
+
+ - We have visual testing tool as reference for developers [Testing Tool](https://atonalstudio.github.io/GRRR/demos/test/?test=Base+%C2%B7+12+cols)
+
 ## License
 
 [MIT License](./LICENSE) — free for commercial and non-commercial use. Credit to [atonal.studio](https://atonal.studio) appreciated.
