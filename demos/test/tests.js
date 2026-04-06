@@ -322,23 +322,15 @@ var tests = [
         name: 'Calc · Single column width',
         expects: 'The orange area should be exactly 1 column wide. Resize to verify it tracks the column size until grid collapsing (breakpoint)',
         className: 'grrr',
-        html: () => makeBoard(12) + `
-            <div class="area t-1col__area" style="margin-top: 12px;">
+        html: () => makeBoard(4) + `
+            <div class="area t-1col__area" style="margin-top: 12px; justify-content: flex-start">
                 <div class="calc-box t-1col__box">1 col</div>
             </div>
         `,
         css: () => `
-        #container{ ${grrrConfig()} }
+        #container{ ${grrrConfig(4,200)} }
         .t-1col__area { grid-column: board; }
         .t-1col__box  { width: var(--grrr-use-col-width); }
-        @container (width < 700px) {
-            #container{
-                --grrr-cols: 6;
-            }
-            #container .col:nth-child(13) ~ *:not(.col--off,.col--margin,.area){
-                display: none;
-            }
-        }
         `
     },
     {
@@ -358,17 +350,16 @@ var tests = [
     },
     {
         name: 'Calc · Responsive vs bounded col width',
-        expects: 'Shrink the canvas. Responsive width (blue) shrinks with the grid. Bounded width (orange) stays at col-width max.',
+        expects: 'Responsive width (blue) shrinks follows the column width. Bounded width (orange) stretch up to the given column width (100px).',
         className: 'grrr grrr--fluid',
-        html: () => makeBoard(12) + `
-            <div class="area t-resp__area" style="margin-top: 12px;">
+        html: () => makeBoard(6) + `
+            <div class="area t-resp__area" style="margin-top: 12px;grid-column: board; flex-direction: column; align-items: start; gap: 6px;">
                 <div class="calc-box t-resp__col" style="background: #a8c8ff; color: #2255aa;">responsive</div>
                 <div class="calc-box t-resp__bounded">bounded (min of both)</div>
             </div>
         `,
         css: () => `
-        #container{ ${grrrConfig()} }
-        .t-resp__area    { grid-column: board; flex-direction: column; align-items: start; gap: 6px; }
+        #container{ ${grrrConfig(6, 100)} }
         .t-resp__col     { width: var(--grrr-use-col-responsive-width); }
         .t-resp__bounded { width: var(--grrr-use-col-width); }
         `
@@ -388,37 +379,30 @@ var tests = [
         .t-still-w__box  { margin-inline: auto; width: calc(var(--grrr-col-width) * 8 + var(--grrr-gutter) * 7); }
         `
     },
-
-    // ── Known issues ─────────────────────────────────────────────
     {
         name: 'Calc · Nesting Intermediate container-type: inline-size',
-        expects: 'Green resolves correctly — no intermediate container. Pink fails: adding container-type:inline-size re-scopes cqw to that element, breaking the column width calculation. CSS has no mechanism to pin cqw to a specific ancestor. Fix: toggle the checkbox to switch --grrr-canvas-width to a dvw-based value, which is viewport-relative and immune to container re-scoping.',
+        expects: 'Testing custom property 100cqw. Both divs must resolve to 6 column width.',
         className: 'grrr',
         html: () => makeBoard(12) + `
-            <div class="area t-nest-safe__area" style="margin-top: 12px;">
+            <div class="area" style="margin-top: 12px;">
                 <div style="font-size: 11px; margin-bottom: 6px; min-width: 100%; text-align: center;">no container-type:inline-size</div>
-                <div class="calc-box t-nest-safe__box" style="background: #c8e6c9; color: #2e7d32;">resolves to 6 columns.</div>
+                <div class="calc-box" style="background: #c8e6c9; color: #2e7d32;">resolves to 6 columns.</div>
             </div>
-            <div class="area t-nest-ct__area" style="margin-top: 12px;">
+            <div class="area area--container" style="margin-top: 12px;">
                 <div style="font-size: 11px; margin-bottom: 6px; min-width: 100%; text-align: center;">intermediate container-type:inline-size</div>
-                <div class="calc-box t-nest-ct__box" style="background: #fac5ff; color: #2e7d32;">fails to resolve to 6 columns.</div>
-                <div class="calc-box t-nest-ct__box" style="background: #c8e6c9; color: #2e7d32; display:none">resolve to 6 columns with dvw strategy</div>
-            </div>
-            <div style="grid-column:board; margin-top: 12px; text-align: center;">
-                <label><input type="checkbox"> Solve with DVW strategy</label>
+                <div class="calc-box" style="background: #c8e6c9; color: #2e7d32;">resolves to 6 columns.</div>
             </div>
         `,
         css: () => `
         #container{ ${grrrConfig()}}
-        .t-nest-safe__area { grid-column: col-start 2 / col-end -2; flex-wrap: wrap; }
-        .t-nest-safe__box  { width: calc(var(--grrr-use-col-width) * 6 + (var(--grrr-gutter) * 5)); }
-        .t-nest-ct__area   { grid-column: col-start 2 / col-end -2; container-type: inline-size; flex-wrap: wrap; }
-        .t-nest-ct__box    { width: calc(var(--grrr-use-col-width) * 6 + (var(--grrr-gutter) * 5)); }
-        #container:has(input:checked) { --grrr-canvas-width: calc(var(--dvw, 100) * 1dvw) }
-        #container:has(input:checked) .t-nest-ct__box { display: none; }
-        #container:has(input:checked) .t-nest-ct__box + .t-nest-ct__box { display: flex !important; }
+        .area { grid-column: col-start 2 / col-end -2; flex-wrap: wrap; }
+        .area--container  { container-type: inline-size; }
+        .calc-box    { width: calc(var(--grrr-use-col-width) * 6 + (var(--grrr-gutter) * 5)); }
         `
     },
+    
+    // ── Known issues ─────────────────────────────────────────────
+
     {
         name: '⚠ Uncovered · 1 column',
         expects: 'repeat(0) bug: setting --grrr-cols: 1 generates 2 columns instead of 1.',
@@ -446,11 +430,11 @@ var tests = [
 
 ];
 
-function grrrConfig(cols=12){
+function grrrConfig(cols=12,width=64){
     return `
     --grrr-cols: ${cols};
     --grrr-gutter: 18px;
-    --grrr-col-width: 64px;
+    --grrr-col-width: ${width}px;
     --grrr-margin: 20px;
     `
 }

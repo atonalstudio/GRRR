@@ -11,7 +11,7 @@ GRRR experiment is not a library, it's a concept.
 
 GRRR is a CSS Grid system designed around runtime configuration via CSS custom properties. Rather than baking values into compiled CSS, every sizing decision — columns, gutters, margins, off areas — lives in variables that cascade and inherit like normal CSS. This means a single class can power layouts across breakpoints, themes, and nested contexts without re-compiling.
 
-It pairs naturally with subgrid for nested components and named grid lines for semantic placement. When used consistently it can significantly reduce the CSS footprint of block-based or component-driven UIs since it's a simple css file with less than 1kb gzipped.
+It pairs naturally with subgrid for nested components and named grid lines for semantic placement. When used consistently it can significantly reduce the CSS footprint of block-based or component-driven UIs since it's a simple css file around 1kb gzipped.
 
 ---
 
@@ -48,7 +48,7 @@ GRRR uses named lines in `grid-template-columns` to expose semantic placement ar
 
 - GRRR does **not** use `gap` or `column-gap`. Gutters are real column tracks.
 - `row-gap` is safe to use.
-- Bear in mind `grid-column: span <value> / span <value>` works really diferent here. See `grrr-span` in [Sass Functions](#sass-functions).
+- Because gutters are real column tracks, every span must account for them. To span 3 columns you need to cross 2 gutters, so the actual track count is 5. Use the `grrr-span()` Sass function to calculate this automatically — see [Sass Functions](#sass-functions).
 
 ---
 
@@ -247,45 +247,6 @@ GRRR exposes read-only CSS custom properties that reflect computed grid values. 
   }
 }
 ```
-
----
-
-## Canvas Width
-
-GRRR needs to know its own width to compute `--grrr-use-col-responsive-width` and derived utility variables. This is controlled by `--grrr-canvas-width`.
-
-| Variable              | Description                             | Default  |
-| --------------------- | --------------------------------------- | -------- |
-| `--grrr-canvas-width` | Canvas width used for utility variables | `100cqw` |
-
-### `100cqw` — default
-
-Resolves to the width of the nearest `container-type: inline-size` ancestor, which is `.grrr` itself (GRRR sets this automatically). No setup required.
-
-> **Limitation:** if any element between `.grrr` and the element consuming utility variables declares `container-type: inline-size`, `cqw` will resolve against that intermediate container instead of the grid, producing incorrect values. In that case, switch to `100dvw` approach.
-
-### `100dvw` — viewport-based
-
-Resolves to the full viewport width regardless of nesting or intermediate containers.
-
-Switch to this approach when both of the following are true:
-- You use utility variable calculations (e.g. `--grrr-use-col-width`) inside descendants of `.grrr`.
-- Those descendants have their own or intermediate `container-type` defined.
-
-```css
-:root {
-  --grrr-canvas-width: 100dvw;
-}
-```
-
-To compensate for scrollbars or other fixed UI elements, subtract their width manually. For pixel-perfect values, use the `ResizeObserver` API to measure the actual available width and expose it as a CSS variable.
-
-```css
-:root {
-  --grrr-canvas-width: calc(100dvw - var(--my-scrollbar-width));
-}
-```
-
 ---
 
 ## Sass Functions
@@ -445,6 +406,38 @@ When a component lives inside a `.grrr--still`, subgrid inherits the still colum
 .panel__label   { grid-column: col-start 1 / col-end 2; }
 .panel__content { grid-column: col-start 3 / col-end 8; }
 ```
+
+---
+
+## Browser Support
+
+**Safe to use in browsers released after mid-2024.** 
+
+<sub>**Documentation version:** 1.0 &nbsp;|&nbsp; **Last updated:** June 2024</sub>
+
+GRRR relies on a specific set of modern CSS features. The table below shows the minimum browser version required for each one and the overall floor for full support.
+
+| Feature | Chrome | Firefox | Safari | Edge | Notes |
+|---|---|---|---|---|---|
+| CSS Grid — named lines, `repeat()`, `minmax()` | 57 | 52 | 10.1 | 16 | Core layout engine — [caniuse](https://caniuse.com/css-grid) |
+| CSS Custom Properties (`var()`) | 49 | 31 | 9.1 | 16 | Used for every config value — [caniuse](https://caniuse.com/css-variables) |
+| `calc()` inside `repeat()` count | 66 | 61 | 12.1 | 66 | Part of grid/calc support — [caniuse](https://caniuse.com/?search=calc) |
+| `min()` in property values | 79 | 75 | 11.1 | 79 | Used in column width resolution — [caniuse](https://caniuse.com/mdn-css_types_min) |
+| Container queries (`container-type`) | 105 | 110 | 16.0 | 105 | [caniuse](https://caniuse.com/css-container-queries) |
+| `cqw` length units | 105 | 110 | 16.0 | 105 | Container query units — [caniuse](https://caniuse.com/css-container-query-units) |
+| CSS Subgrid (`grid-template-columns: subgrid`) | 117 | 71 | 16.0 | 117 | [caniuse](https://caniuse.com/?search=css-subgrid) |
+| `@property` (registered custom properties) | 85 | **128** | 16.4 | 85 | [caniuse](https://caniuse.com/mdn-css_at-rules_property) |
+
+
+### Overall floor
+
+| Browser | Minimum version | Limiting feature |
+|---|---|---|
+| Chrome / Edge | **117** | Subgrid |
+| Firefox | **128** | `@property` |
+| Safari | **16.4** | `@property` |
+
+> Even prior to baseline browser support, GRRR remains largely functional. However, issues may arise with certain calculations (when used) and with subgrid (which is not a core feature of GRRR).
 
 ---
 

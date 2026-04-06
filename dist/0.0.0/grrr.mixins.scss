@@ -16,7 +16,7 @@ $off-left: var(--_grrr-off-left);
 $off-right: var(--_grrr-off-right);
 $gutters-total-width: var(--_grrr-gutters-total-width);
 $margins-total-width: var(--_grrr-margins-total-width);
-$canvas-width: var(--_grrr-canvas-width);
+$canvas-width: var(--grrr-canvas-width, var(--_grrr-canvas-width));
 $board-width: var(--_grrr-board-width);
 $still-start: var(--_grrr-still-start);
 $still-end: var(--_grrr-still-end);
@@ -36,7 +36,6 @@ $_off-left: var(--grrr-off-left, var(--grrr-off, minmax(0, 1fr)));
 $_off-right: var(--grrr-off-right, var(--grrr-off, minmax(0, 1fr)));
 $_gutters-total-width: calc( #{$gutter} * (#{$cols} - 1) );
 $_margins-total-width: calc( #{$margin-left} + #{$margin-right} );
-$_canvas-width: var(--grrr-canvas-width, 100cqw);
 $_board-width: calc( #{$canvas-width} - ( #{$margins-total-width} + #{$gutters-total-width} ) );
 $_still-start: var(--grrr-still-start, 3);
 $_still-end: var(--grrr-still-end, 10);
@@ -50,6 +49,15 @@ $_still-col-width: calc(
 $_still-col-flex-width: min(#{$still-col-width},#{$col-width});
 $_still-col: var(--grrr-still, #{$_still-col-flex-width});
 
+@mixin grrr-canvas-width-property{
+	// Stores container cqw units.
+	@property --_grrr-canvas-width {
+		syntax: '<length>';
+		inherits: true;
+		initial-value: 0px;
+	}
+}
+
 @mixin grrr-vars{
 	--_grrr-cols: #{$_cols};
 	--_grrr-gutter: #{$_gutter};
@@ -61,7 +69,6 @@ $_still-col: var(--grrr-still, #{$_still-col-flex-width});
 	--_grrr-off-right: #{$_off-right};
 	--_grrr-gutters-total-width: #{$_gutters-total-width};
 	--_grrr-margins-total-width: #{$_margins-total-width};
-	--_grrr-canvas-width: #{$_canvas-width};
 	--_grrr-board-width: #{$_board-width};
 }
 
@@ -73,7 +80,6 @@ $_still-col: var(--grrr-still, #{$_still-col-flex-width});
 	--_grrr-still-col-flex-width: #{$_still-col-flex-width};
 	--_grrr-still-col: #{$_still-col};
 }
-
 
 @mixin grrr-utilites-vars {
 	--grrr-use-col-responsive-width: calc( #{$board-width} / #{$cols} );
@@ -87,6 +93,7 @@ $_still-col: var(--grrr-still, #{$_still-col-flex-width});
 
 // grrr--setup
 @mixin grrr-base {
+	--_grrr-canvas-width: 100cqw;
 	display: grid;
 	grid-auto-rows: auto;
 	grid-auto-flow: row;

@@ -1,5 +1,7 @@
 @use './grrr.mixins.scss';
 
+@include  grrr.grrr-canvas-width-property;
+
 .grrr{
 	@include grrr.grrr-base;
 	@include grrr.grrr-vars;

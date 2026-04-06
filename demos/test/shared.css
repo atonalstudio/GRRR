@@ -142,6 +142,7 @@ body {
   resize: horizontal;
   overflow: auto;
   container-type: inline-size;
+  container-name: canvas;
 }
 
 /* ── Grid container ── */

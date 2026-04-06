@@ -4,7 +4,13 @@
  * Licensed under the MIT License
  * For details, see: https://github.com/atonalstudio/grrr
  */
+@property --_grrr-canvas-width {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
 .grrr {
+  --_grrr-canvas-width: 100cqw;
   display: grid;
   grid-auto-rows: auto;
   grid-auto-flow: row;
@@ -22,8 +28,7 @@
   --_grrr-off-right: var(--grrr-off-right, var(--grrr-off, minmax(0, 1fr)));
   --_grrr-gutters-total-width: calc(var(--_grrr-gutter) * (var(--_grrr-cols) - 1));
   --_grrr-margins-total-width: calc(var(--_grrr-margin-left) + var(--_grrr-margin-right));
-  --_grrr-canvas-width: var(--grrr-canvas-width, 100cqw);
-  --_grrr-board-width: calc(var(--_grrr-canvas-width) - (var(--_grrr-margins-total-width) + var(--_grrr-gutters-total-width)));
+  --_grrr-board-width: calc(var(--grrr-canvas-width, var(--_grrr-canvas-width)) - (var(--_grrr-margins-total-width) + var(--_grrr-gutters-total-width)));
   --grrr-use-col-responsive-width: calc( var(--_grrr-board-width) / var(--_grrr-cols) );
   --grrr-use-col-width: min(
   	var(--_grrr-col-width),
