@@ -1,0 +1,122 @@
+// GRRR Sass function test suite
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use '../src/scss/grrr.mixins.scss' as grrr;
+
+// ── Test registry ─────────────────────────────────────────────────────────────
+
+$tests: ();
+
+@mixin test($name, $expects, $result) {
+    $tests: list.append($tests, (
+        name   : $name,
+        expects: meta.inspect($expects),
+        result : meta.inspect($result),
+        valid  : meta.inspect($result) == meta.inspect($expects)
+    ), $separator: comma) !global;
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+$e-g:        var(--_grrr-gutter);
+$e-sw-base:  min(var(--grrr-use-col-responsive-width), var(--_grrr-col-width));
+$e-swf-base: var(--grrr-use-col-responsive-width);
+$e-sws-base: var(--_grrr-col-width);
+
+// ── Tests ─────────────────────────────────────────────────────────────────────
+
+// grrr-span
+@include test(
+    'span(1) returns a single-column span with no gutters',
+    span 1,
+    grrr.grrr-span(1)
+);
+@include test(
+    'span(3) returns a 3-column span including 2 gutters',
+    span 5,
+    grrr.grrr-span(3)
+);
+@include test(
+    'span(6) returns a 6-column span including 5 gutters',
+    span 11,
+    grrr.grrr-span(6)
+);
+
+// grrr-span-width
+@include test(
+    'span-width(1) returns width for 1 column with no gutters',
+    calc(#{$e-g} * 0 + 1 * #{$e-sw-base}),
+    grrr.grrr-span-width(1)
+);
+@include test(
+    'span-width(3) returns width for 3 columns and 2 internal gutters',
+    calc(#{$e-g} * 2 + 3 * #{$e-sw-base}),
+    grrr.grrr-span-width(3)
+);
+@include test(
+    'span-width(12) returns width for a full 12-column board with 11 gutters',
+    calc(#{$e-g} * 11 + 12 * #{$e-sw-base}),
+    grrr.grrr-span-width(12)
+);
+@include test(
+    'span-width(4, 1) adds 1 extra gutter to the 3 internal ones',
+    calc(#{$e-g} * 4 + 4 * #{$e-sw-base}),
+    grrr.grrr-span-width(4, 1)
+);
+
+// grrr-span-width-fluid
+@include test(
+    'span-width-fluid(3) uses responsive width only — no max cap',
+    calc(#{$e-g} * 2 + 3 * #{$e-swf-base}),
+    grrr.grrr-span-width-fluid(3)
+);
+@include test(
+    'span-width-fluid(4, 2) adds 2 extra gutters — 5 total',
+    calc(#{$e-g} * 5 + 4 * #{$e-swf-base}),
+    grrr.grrr-span-width-fluid(4, 2)
+);
+
+// grrr-span-width-still
+@include test(
+    'span-width-still(3) uses fixed col-width — does not shrink',
+    calc(#{$e-g} * 2 + 3 * #{$e-sws-base}),
+    grrr.grrr-span-width-still(3)
+);
+@include test(
+    'span-width-still(4, 1) adds 1 extra gutter — 4 total',
+    calc(#{$e-g} * 4 + 4 * #{$e-sws-base}),
+    grrr.grrr-span-width-still(4, 1)
+);
+@include test(
+    'span-width-still(3, 0, 60px) resolves col at compile time — gutter stays as var',
+    calc(#{$e-g} * 2 + 180px),
+    grrr.grrr-span-width-still(3, 0, 60px)
+);
+@include test(
+    'span-width-still(3, 1, 60px, 12px) fully static — resolves to a single px value',
+    216px,
+    grrr.grrr-span-width-still(3, 1, 60px, 12px)
+);
+
+// ── Runner ────────────────────────────────────────────────────────────────────
+
+$passed: 0;
+$failed: 0;
+
+@each $test in $tests {
+    $valid: map.get($test, valid);
+
+    @if $valid {
+        $passed: $passed + 1 !global;
+        @debug '✓  #{map.get($test, name)}';
+    } @else {
+        $failed: $failed + 1 !global;
+        @debug '✗  #{map.get($test, name)}';
+        @debug '   expects → #{map.get($test, expects)}';
+        @debug '   got     → #{map.get($test, result)}';
+    }
+}
+
+@debug '─────────────────────────────────────';
+@debug 'Results: #{$passed} passed / #{$failed} failed';

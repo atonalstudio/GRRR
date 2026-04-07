@@ -268,20 +268,19 @@ $after-still-range: "repeat(calc(#{$cols} - #{$still-end}), minmax(0, #{$gutter}
 @function grrr-span-width-still(
 	$n-cols,
 	$n-extra-gutters: 0,
-	$col-width: false,
-	$gutter-width: false
+	$col-width: null,
+	$gutter-width: null
 ) {
-	@return grrr-span-calc(
-		$n-cols,
-		$n-extra-gutters,
-		if($col-width == false, #{$col-width}, $col-width),
-		$gutter-width
-	);
+	$resolved-col-width: var(--_grrr-col-width);
+	@if $col-width { $resolved-col-width: $col-width; }
+	@return grrr-span-calc($n-cols, $n-extra-gutters, $resolved-col-width, $gutter-width);
 }
 
 // Base span calculation function.
-@function grrr-span-calc($n-cols, $n-extra-gutters: 0, $col-width, $gutter-width: false) {
-	$gutter-width: if($gutter-width == false, #{$gutter}, $gutter-width);
+@function grrr-span-calc($n-cols, $n-extra-gutters: 0, $col-width, $gutter-width: null) {
+	@if not $gutter-width {
+		$gutter-width: $gutter;
+	}
 	$gutter-total: calc($gutter-width * ($n-cols - 1 + $n-extra-gutters));
 	$total-width: calc($gutter-total + $n-cols * $col-width);
 	@return $total-width;
