@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npm-run-all --parallel devJsServer devSassWatch devCssPrefix",
     "build": "npm-run-all buildSass buildCss buildCssMin buildCssPrefix",
+    "testSass": "npx sass --no-source-map ./tests/mixins.test.scss",
     "devJsServer": "webpack serve --mode development --config webpack.config.js",
     "devSassWatch": "sass --watch --update --style=expanded src/scss:src/css",
     "devCssPrefix": "postcss src/css/*.css --use autoprefixer -d src/css --watch",
