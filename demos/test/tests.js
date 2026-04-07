@@ -405,7 +405,7 @@ var tests = [
 
     {
         name: '⚠ Uncovered · 1 column',
-        expects: 'repeat(0) bug: setting --grrr-cols: 1 generates 2 columns instead of 1.',
+        expects: 'repeat(0) bug: setting --grrr-cols: 1 generates 2 columns instead of 1. Intentionally unsupported—supporting single-column cases would add bundle size for a rare edge case that can be easily handled with custom solutions.',
         className: 'grrr',
         html: () => makeBoard(2),
         css: () => `
@@ -416,7 +416,7 @@ var tests = [
     },
     {
         name: '⚠ Uncovered · Still single column (start = end)',
-        expects: 'repeat(0) bug: still-start = still-end collapses the repeat, adding a phantom still column.',
+        expects: 'repeat(0) bug: still-start = still-end collapses the repeat, adding a phantom still column. Intentionally unsupported—supporting single-column cases would add bundle size for a rare edge case that can be easily handled with custom solutions.',
         className: 'grrr grrr--still',
         html: () => makeBoard(13) + stillAreaItem(),
         css: () => `
