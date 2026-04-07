@@ -36,6 +36,15 @@
   );
   --grrr-unstill: var(--_grrr-col-flex-width);
   --grrr-use-fluid-col: minmax(0, 1fr);
+  --grrr-use-board-fluid-width: calc(var(--grrr-canvas-width, var(--_grrr-canvas-width)) - var(--_grrr-margins-total-width));
+  --grrr-use-board-width: min(
+  	var(--grrr-use-board-fluid-width),
+  	calc(var(--_grrr-cols) * var(--_grrr-col-width) + var(--_grrr-gutters-total-width))
+  );
+  --grrr-use-off-total-width: max(0px, calc(
+  	var(--grrr-canvas-width, var(--_grrr-canvas-width)) - var(--_grrr-margins-total-width) - var(--grrr-use-board-width)
+  ));
+  --grrr-use-off-width: calc(var(--grrr-use-off-total-width) / 2);
 }
 .grrr--still {
   --_grrr-still-start: var(--grrr-still-start, 3);

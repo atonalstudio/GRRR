@@ -223,9 +223,15 @@ GRRR exposes read-only CSS custom properties that reflect computed grid values. 
 | --------------------------------- | --------------------------------------------------------------------------------------- |
 | `--grrr-use-col-width`            | Resolved column width: `min(responsive-width, --grrr-col-width)`                        |
 | `--grrr-use-col-responsive-width` | Column width computed from available space: `board-width / cols`                        |
+| `--grrr-use-board-width`          | Actual rendered board width, accounting for bounded vs collapsed states                 |
+| `--grrr-use-board-fluid-width`    | Actual rendered board width in fluid state, width between both margins                  |
+| `--grrr-use-off-total-width`      | Total remaining space outside the board: `canvas - margins - board` (both sides)        |
+| `--grrr-use-off-width`            | One side's off area: `--grrr-use-off-total-width / 2`. Assumes symmetric.               |
 | `--grrr-use-still-area`           | Shorthand for the still area placement: `col-start N / col-end M`                       |
 | `--grrr-unstill`                  | The fluid column value. Assign to `--grrr-still` to turn off the still effect.          |
-| `--grrr-use-fluid-col`            | The fluid column value (`minmax(0, 1fr)`). Assign to `--grrr-fluid-col` to go fluid.   |
+| `--grrr-use-fluid-col`            | The fluid column value (`minmax(0, 1fr)`). Assign to `--grrr-fluid-col` to go fluid.    |
+
+> **Limitation:** Utility variables rely on `calc()` and are only accurate when columns, gutters, and margins are defined as fixed `<length>` values (e.g. `px`). If you use `1fr`, `minmax()`, or other intrinsic sizing functions in the GRRR setup, CSS cannot resolve them to concrete lengths at calculation time, resulting in incorrect values. In these cases, rely on `subgrid` or alternative strategies.
 
 **Sizing a flex child to match a column span:**
 
@@ -251,7 +257,7 @@ GRRR exposes read-only CSS custom properties that reflect computed grid values. 
 
 ## Sass Functions
 
-> Optional. Most useful for elements inside a GRRR parent that use a different display model (flex, `position: absolute`, canvas, etc.) and need widths that match the grid.
+> Sass is optional. Useful for shorthand calculations in elements within a GRRR parent using different display models (e.g. flex, `position: absolute`, canvas) that need to use grid references.
 
 ### `grrr-span`
 
@@ -305,7 +311,7 @@ Same as `grrr-span-width` but uses the responsive column width rather than the f
 
 ### `grrr-span-width-still`
 
-Returns the computed width for columns within a still area.
+Returns the pixel-fixed width of N columns as measured — using `--grrr-col-width` as the column size rather than the responsive width. Use this when sizing elements that must match still columns exactly and should not shrink or stretch with the grid.
 
 | Parameter          | Required | Default                  | Description           |
 | ------------------ | -------- | ------------------------ | --------------------- |

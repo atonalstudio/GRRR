@@ -375,7 +375,7 @@ var tests = [
         ` + stillAreaItem(),
         css: () => `
         #container{ ${grrrConfig()} }
-        .t-still-w__area { grid-column: board; }
+        .t-still-w__area { grid-column: col-start 2 / col-end -2; }
         .t-still-w__box  { margin-inline: auto; width: calc(var(--grrr-col-width) * 8 + var(--grrr-gutter) * 7); }
         `
     },
@@ -401,6 +401,80 @@ var tests = [
         `
     },
     
+    {
+        name: 'Calc · Board width',
+        expects: 'Orange box should align exactly with the board (col-start to col-end). Resize: it stays bounded at max board width and only shrinks when the canvas can no longer fit the full board.',
+        className: 'grrr',
+        html: () => makeBoard(12) + `
+            <div class="t-bw__area" style="margin-top: 12px;">
+                <div class="calc-box t-bw__box">--grrr-use-board-width</div>
+            </div>
+        `,
+        css: () => `
+        #container  { ${grrrConfig()} }
+        .t-bw__area { grid-column: full; display: flex; justify-content: center; }
+        .t-bw__box  { width: var(--grrr-use-board-width); }
+        `
+    },
+    {
+        name: 'Calc · Board fluid width ',
+        expects: 'Orange box should align exactly with the board (col-start to col-end). Resize: it stays bounded at between margins.',
+        className: 'grrr grrr--fluid',
+        html: () => makeBoard(12) + `
+            <div class="t-bw__area" style="margin-top: 12px;">
+                <div class="calc-box t-bw__box">--grrr-use-board-fluid-width</div>
+            </div>
+        `,
+        css: () => `
+        #container  { ${grrrConfig()} }
+        .t-bw__area { grid-column: full; display: flex; justify-content: center; }
+        .t-bw__box  { width: var(--grrr-use-board-fluid-width); }
+        `
+    },
+    {
+        name: 'Calc · Off widths',
+        expects: 'Yellow boxes fill each off area using --grrr-use-off-width (one side). Blue bar shows --grrr-use-off-total-width = both off areas combined. All collapse to zero when the canvas is too narrow for the full board.',
+        className: 'grrr',
+        html: () => makeBoard(6) + `
+            <div class="t-ow__left" style="margin-top: 12px;">
+                <div class="calc-box t-ow__box" style="background: #fff9c4; color: #f57f17;">off-width</div>
+            </div>
+            <div class="t-ow__board" style="margin-top: 12px;"></div>
+            <div class="t-ow__right" style="margin-top: 12px;">
+                <div class="calc-box t-ow__box" style="background: #fff9c4; color: #f57f17;">off-width</div>
+            </div>
+            <div class="t-obw__area" style="margin-top: 8px;">
+                <div class="calc-box t-obw__box" style="background: #bbdefb; color: #1565c0;">--grrr-use-off-total-width (total both sides)</div>
+            </div>
+        `,
+        css: () => `
+        #container   { ${grrrConfig(6)} }
+        .t-ow__left  { grid-column: off-start 1 / off-end 1; display: flex; align-items: center; min-height: 48px; }
+        .t-ow__board { grid-column: board; }
+        .t-ow__right { grid-column: off-start 2 / off-end 2; display: flex; align-items: center; min-height: 48px; }
+        .t-ow__box   { width: var(--grrr-use-off-width); }
+        .t-obw__area { grid-column: full; display: flex; justify-content: center; }
+        .t-obw__box  { width: var(--grrr-use-off-total-width); }
+        `
+    },
+    {
+        name: 'Calc · Off width - pushed to right',
+        expects: 'Asymmetric layout: right off collapsed to 0px, so the board is flush against the right margin. The yellow box uses --grrr-use-off-total-width (total remaining space) and should fill the entire left off area. This confirms the total is still accurate when off is asymmetric — unlike --grrr-use-off-width which assumes equal sides.',
+        className: 'grrr',
+        html: () => makeBoard(6) + `
+            <div class="t-ow__left" style="margin-top: 12px;">
+                <div class="calc-box t-ow__box" style="background: #fff9c4; color: #f57f17;">off-width</div>
+            </div>
+        `,
+        css: () => `
+        #container   { ${grrrConfig(6)} --grrr-off-right: 0px; }
+        .t-ow__left  { grid-column: off-start 1 / off-end 1; display: flex; align-items: center; min-height: 48px; }
+        .t-ow__board { grid-column: board; }
+        .t-ow__right { grid-column: off-start 2 / off-end 2; display: flex; align-items: center; min-height: 48px; }
+        .t-ow__box   { width: var(--grrr-use-off-total-width) }
+        `
+    },
+
     // ── Known issues ─────────────────────────────────────────────
 
     {

@@ -89,6 +89,18 @@ $_still-col: var(--grrr-still, #{$_still-col-flex-width});
 	);
 	--grrr-unstill: #{$col-flex-width};
 	--grrr-use-fluid-col: minmax(0, 1fr);
+	// Board width: min of (canvas minus margins) and (max bounded board width).
+	--grrr-use-board-fluid-width: calc(#{$canvas-width} - #{$margins-total-width});
+	--grrr-use-board-width: min(
+		var(--grrr-use-board-fluid-width),
+		calc(#{$cols} * #{$col-width} + #{$gutters-total-width})
+	);
+	// Total remaining space outside the board (both off areas combined).
+	--grrr-use-off-total-width: max(0px, calc(
+		#{$canvas-width} - #{$margins-total-width} - var(--grrr-use-board-width)
+	));
+	// One side's off area. Assumes symmetric off.
+	--grrr-use-off-width: calc(var(--grrr-use-off-total-width) / 2);
 }
 
 // grrr--setup
